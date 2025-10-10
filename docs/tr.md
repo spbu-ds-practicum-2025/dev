@@ -87,6 +87,8 @@
 * Log Broker - брокер логов, обеспечивающий ассинхронную передачу данных о действиях, произошедших на сервирах, в Logs DB
 * Logs DB - База данных, хранящая логи том, что происходило на серверах во время сессий.
 
+**Диаграмма компонентов:**
+<https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=Rasp.drawio&dark=auto#R%3Cmxfile%3E%3Cdiagram%20name%3D%22%D0%A1%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0%20%E2%80%94%201%22%20id%3D%22AjQ_Fv6i8eFsjXY3NpaH%22%3E7Vxbc6o6FP41PnYPhIvyWC%2B9zLRz3NueOdvHKKlmNoIDWHX%2F%2BpNAgkCwUgsSZugDJYsQzLdWvqy1Euhpo83h0Yfb9atnI6cHFPvQ08Y9AIBimuQflRxjiUr%2BYsnKxzaTnQQz%2FBcxocKkO2yjIFMx9DwnxNuscOm5LlqGGRn0fW%2BfrfbuOdmnbuEKCYLZEjpMCk7S%2F7AdrmPpAPRP8ieEV2v%2BZNW04isbyCuzngRraHv7lEib9LSR73lhfLY5jJBD0eO4xPc9nLma%2FFwfuWGZG3bD%2FevzwsHrhXI3f3DmP63N6x1r5QM6O9Zh9mPDI0fA93aujWgjSk8b7tc4RLMtXNKre6J0IluHG4eUVHIq%2Fij%2BBOSH6JASsR%2F5iLwNCv0jqcKuDhhezGKS8v4EP1CYbJ2CXudCyFS%2BSpo%2BoUJOGDBfAAmIIBEsrHt6HA6j4yA6GtFx3CNQDEB0VCNJXHPC6hA90ZOHqIKSun2YqmZmG0w9Iq8fAmuYVQJ08Mol50uiBOQTAQUfE5u%2BZxc22Lbp7YXazOq7BoVaJRWq1aVPXdDnvwHBKQ%2FsBVOHwTYmnHd8oHBVAZWqZ7HSNBGrQQFUg7qgMloDla43DJXZGqgMo2GoBvLNOsnsccyVL7GUataFkiWg9AhDtIfH9k0BArpq03OAKno%2B99NnIjiHcQPjVjclozi1wBPK44Rc%2B5763dT4HBgEeEnACELoh6I4hV%2FW5NABh7%2FZFXo%2Bp%2FIfBiuND6lq4yMvuKSLv9OF%2BC5g8PLpvqjEbzyrqcDb%2BUt02ZEgnVuhsISxITsTbIiKTynWKFAsl%2FnIgSH%2ByAYuRdpmT5h6mHQtsau%2BlZsPrJzBxB1nd6VDilxDg%2FzEoucaipERGoqML%2Bn2N%2BxRnHN%2FTWZvpK2nt7epaJoE%2Fhe4ICHqlVzpowD%2FhYuoPWo5W9qxqKvGsGeMC23p84GU54IkkGVP6aVjxSKOUH4oCg9GmRZ4UHetlfAq3vt7gOrRm9ZCHqmPRoyORpqlETHKaQmN8HF0PY1wzgDSc4YYtcvPGf36SMPsSKNZ0ui3lTT4QLqeNCRmCQlTC2aJjLYBCoZcfRltVcwtzJD%2FgZcoEOCSPrmQx1crSN0YZgG%2BtSUXuDJT8E59j4AbYHdF5BRrOVKDFshh13TCGYh5mZZA13h2hlNd%2B6BrPCENxICUo6W8Qheu5MCtr%2BVG68BoGDfRKR%2BtoUs8TaA8u%2B%2BevyF%2BgueS0hN0yZQgJYpGwXxxWxTF%2BFPAqZrQJglTTtmMOav5WZTCQ6JTGDRPXSkOic4q6mJkA8qmVfmo7UKbap1oXbTHaG1E2pAmGUBVpFPBwMygL386FYhp8Lr544tLLMU5FfB5UuUbDKKVZRClY5A6LFIT40vJGYQPoW8zyB1dkdFM6TlDTF%2B1gjOap4wun1qP0yHmTCSnDD6CqnA6dMVqm9NRItMqI4H0m2cQ0DFILQwi5r8kZxA%2BhCpxOnSeDOLLDNIziOgk3pZBLq7O3ppBSic%2BOgaph0HEdKbkDMKHUCUMYgDpvQ5N9BJbwRnNU0YXttRDGeLKkdyUkYygKigDqP2s03GnSc8gJV55lJFB6kuWlqaQLllaD4WceRVFXgo5t%2BR6DYWoitW27euaGGi%2BeHSHBWGAP3KscRNUJdudot9skeoa%2Brz9pn%2B%2BL7db5W6KdsUE5urXdCT%2FBl692rUqnoVqDf3qN1u6uib9IzOT6B2T1GKQYiKzJUxS5RKWwm9tDZFwO5bpZQE1%2F7mUog8RqEW72ev7EIEhBihjSEwDBm18XUBEuOBjBIUI1%2Fa%2BgFEYUBBsFY6zAHOwhlt6ujw6mODja5etcxEj%2BbJIBHD5ZxXh%2B88uJM0gJg%2Fir3CpRkWAa2o2SVQUi1i3jEWMa98l%2FHKyR7JscVlPgUe4nadQ8YwjxhyTD8SeJaePkIyVSqKNZFm6PU7CtZvzW7%2B0BDqyaJYsxLBCerKobCN%2BS8ni2iRn67fPKh1ZNEsWYlJMerKoLI9Jd7%2FxvTvykgMPKSWIOmhpinxMukSV3QBhcB64SBhGRxj1WKOY1Jn9fJGYLpLhU8mqM9Ab3KlCiqfvfsfVT59P1yb%2FAw%3D%3D%3C%2Fdiagram%3E%3C%2Fmxfile%3E>
 
 ## Технические сценарии
 
@@ -156,8 +158,30 @@
 
 ## План разработки и тестирования
 
-1. Написание клиентского приложения для редактирования изображения с минимально необходимым набором функций и инструментов.
-2. Реализация. API Gateway, Server Manager, Change Information Handler
-3. Подключение серверов (Processing Server), реализациия Log Broker, Logs DB.
-4. Проведение тестов, добавление отказоустойчивости и масштабируемости.
+- **MVP (необходимый минимум):**
+1. Написание клиентского приложения для редактирования изображения с минимальным набором функций и инструментов.
+2. Реализация API Gateway, Server Manager, Change Information Handler
+3. Подключение всего двух серверов (Processing Server).
+4. Проведение тестов, добавление частичной отказоустойчивости (отказ первого сервера не затрагивает второй сервер; при падении сервера пользователь может сохранить последние полученные данные).
+5. Сценарий IV на подключение к сессии урезан и не включает в себя запрос разрешения на подключение к сессии: пользователь подключается к сессии сразу без согласия её создателя.
 
+- **Расширенная часть:**
+1. Реализация логов (Log Broker, Logs DB).
+2. Полная реализация сценария IV, как он описан в пункте "7. Пользовательские сценарии".
+3. Добавление дополнительных инструментов для редактирования изображения (ведро/фигуры/поворот...)
+4. Возможность загрузки изображение из вне для дальнейшего редактирования.
+5. Улучшение отказоустойчивости: когда сервер падает, сессия автоматически переносится на другой.
+6. Масштабируемость на 3 и более серверов.
+7. Поддержка редактирования одного изображения 4+ людьми.
+
+**DoD:**
+* Работоспособность:
+  + Система обеспечивает одновременную работу как минимум для 3 пользователей на одной сессии.
+  + Поддержка как минимум 2 разных сессий на разных серверах в одно и то же время.
+
+* Отказоустойчивость:
+  + При падении одного Processing Server не затрагивает другие сессии.
+  + При падении сервера изображение не устрачивается полностью: пользователи могут сохранить последние полученные от сервера данные.
+
+* Пользовательские сценарии:
+  + Пользовательские сценарии реализованы в соответствии с их описанием.
