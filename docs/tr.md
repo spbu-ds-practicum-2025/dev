@@ -99,6 +99,8 @@
   + 4. Change Information Handler отправляет изображение и список пользователей в API Gateway.
   + 5. API Gateway присылает созданное изображение всем клиентам, указанным в списке.
 
+**Диграмма:**
+https://mermaid.live/edit#pako:eNqdk8Fq20AQhl9lmbNqLEuOJR0CJYU2h0Cg9BJ0WayJLBrtuiupbWoMUXIIOQVy6bGv4Ia6MaV1XmH2jTqyk2LjhprqpP1n9_t2pN0R9HWCEEGB7ypUfXyRydTIPFaCn6E0ZdbPhlKV4k2BptiMnx_ui5eyxA_ydLP4Gs17NOJAKpmi2azvDaRKUeyrY21yWWZaiVdSJSd_m3todB-L4oG5rK9nz3Z3nwZGgr7Q1J7RlL7RxF7SRNCM7mhOXzmc0Hcu_KKZvV6SnwaxZb0tJn9mwD1j5rYWtqZ75tT0gxX2ojHZ2p43cI7mdNvMmHJUczBb2taB_-rjhil3dNts2149bnvVy5Itulj5c1t_HI7_q8EVF5sXR2l754ZjQj_XHOBAarIEotJU6ECO3GwzhFFjj6EcYI4xRPyaSPM2hliNeQ0fqyOt88dlRlfpAKJjeVLwqBomvN-H2_AnNagSNHu6UiVEnY4fLigQjeAjRK7bbvneju-2g8ALOkG358Apx77X8jgP3V6HK0FvZ-zAp4W43Qp9P2j7buh2g9Drdn0HMMlKbQ6Wt3JxOce_Acg4oWo
 
 * II. Открытие сессии для редактирования нового изображения.
   + 1. Клиент отправляет запрос в AGI Gateway с параметрами: логин клиента, длина/ширина изображения.
@@ -117,6 +119,8 @@
     - 10. API Gateway отправляет информацию об открытии сервера клиенту.
     - 11. Обновление информации об изображении, привязанному к определённому серверу (сценарий I).
 
+**Диграмма:**
+https://mermaid.live/edit#pako:eNq9lM9u00AQxl9lNScQxoprO3F8qISKBD1UqoS4IF9W8daxqNdhbQMlipREiB44VJzgVKlvkFYNREDDK8y-EWMnVHUS_qgHfLB3Z3Z-33z2evvQSUMBPmTiRSFkRzyMeaR4EkhGV4-rPO7EPS5z9jQTKlsPP9jfZY94Ll7xo_XkE6FeCsX2uOSRUOv5nS6XkWC78iBVCc_jVLLHXIaHm9buq7QjsmzJXOSrnu5vb99owmf4ESf4Qw9xrkcMr3DCaDTGr3qo39NzhlOmRzjVI7rPcLYg3SAQr973LZF1CFHrDoh6hufEGTKqudJvyyF-x4l-VzJIoWSSIAnM9QmpltFKZogX1X2OFwupOnndwL82dBubf9NmeKrH-lh_0GPC4fkqc8XThN2h4JdyZTnDzzitrE8NRkXj5VuhBZeU_MbK8rHJ8NK8-xuT9b3xafVN65NlV5tEZ-zeho9zXfJnI5s2VrVh_28bYECk4hD8XBXCgETQn1ZOoV82GEDeFYkIwKdhyNXzAAI5oBr6556lafKrTKVF1AX_gB9mNCt6IVlaHhXXUSVkKNROWsgcfNu2mhUF_D68Bt-yGqZjNx2r4Xm2t-W5LQOOKOzYpk3xttXaoozXag4MeFMJN8y243gNx2pbrte2Xdc1QIRxnqq9xZFVnVyDn6S0Ruw
 
 * III. Запрос списка открытых сессий.
 
@@ -126,6 +130,8 @@
   + 4. Server Manager отправляет список активных сессий в API Gateway.
   + 5. API Gateway отправляет список активных сессий пользователю.
 
+**Диграмма:**
+https://mermaid.live/edit#pako:eNq1U81O20AQfpXVnE0UY5s4PiAhkCgHJKSql8qXVTw4Fng3Xdu0NIoE_T1w4MiZNwgRkSIg5hV234ixk1ZYCUcseez5Zvb7ZnZnh9CTEUIAGX4pUPRwL-Gx4mkoGD0DrvKklwy4yNmnDFW2Cu8cHbB9nuNXfr4a_IjqDBU75ILHqFbju30uYmQH4liqlOeJFOwDF9HputwjJXuYZUvORbyuaWN7-1URAdM3eqyfzYUuzSXTcz1m-lmX-tH8NH_1lICZnjJzSeCM7APF6TOhjDt67_XcXJnfFTQlikltSz1Z6L3SIdVmd-8q3JQi7eZukPZtxWIuGInMza_qVz_psflD_ozpsuKlsswPstd1KbM3pJrMa9p8o6LmGdwuuyz1w7qtqw-umQYWxCqJIMhVgRakSBNRuTCsCELI-5hiCKQPEVcnIYRiRGtoNj5Lmf5bpmQR9yE45qcZecUgIsnlSP9HFYoI1a4sRA6B0_GdmgWCIXyDwLbbLdfZcu227zv-pu91LDgn2HVaDuFdu7NJEb-zNbLgey3cbnVd12-7dtf2_K7jeZ4FGCW5VIeLq1XfsNELPbB87w
 
 * IV. Запрос на подключение к сессии.
 
@@ -147,6 +153,8 @@
     - 9. Server Manager добавляет пользователя в список участников сессии, открытой на этом сервере.
     - 10. Обновление информации об изображении, привязанному к определённому серверу (сценарий I).
 
+**Диграмма:**
+https://mermaid.live/edit#pako:eNqVk89K60AUxl9lOOtaG5PaJAtBFNSFIIgbyWZojmnQzNRJ4r1aCgre687tXV98gSoWxD_tK5y8kadpFUPrwixCznfy_c6XmUwP2jpE8CHF0xxVGzdjGRmZBErw1ZUmi9txV6pMHKRo0nl5fW9HbMkMf8nz-eY-mjM0YlcqGaGZ7290pIpQ7KgjbRKZxVqJbanCk0Xv7hndxjSdMaf9MtPS2tqXEL6gfzSgcXFJo-JK0BsNBI1pRI_0TC_FbXFDQxafaDhFfLEyqBr4p6yqm3HVzIz7T_eMuhTseSuuJ4_0SoPiL9dPgkaiuKIhaw_lfUatQhaE_GZ4dVHuGD1m7J_l6ffwjAG9LFqDclG_dUANIhOH4GcmxxokyBs3KaE3YQWQdTDBADgVhNIcBxCoPnt4Cw-1Tj5sRudRB_wjeZJylXdDnj778z5VgypEs6FzlYFve55TUsDvwW_wLatRd-xVx2q4ru2uuM1WDc5Zduy6zbpntVa447ZW-zW4KAc36p7juA3H8qym69nNJvMwjDNtdqcnoDwI_Xepaz9l
 
 * V. Внесение изменения в изображение. (Для избежания конфликтов в программе пользователи редактируют изображение по очереди. Когда пользователь заканчивает редактировать изображение и подтвержает окончание своей очереди, он освобождает роль редактора изображения. В этот момент любой другой пользователь может занять роль редактора и начать изменять изображение. Пользователь без роли редактора не может вносить изменения в изображения, но может наблюдать за тем, что делает редактор.)
 
@@ -157,6 +165,8 @@
   + 5. Processing Server обрабатывает изменения и применяет их к изображению.
   + 6. Обновление информации об изображении, привязанному к определённому серверу (сценарий I).
 
+**Диграмма:**
+https://mermaid.live/edit#pako:eNqFUsFKw0AQ_ZVlLr2kJWk2bbKHglTQHgoF8SK5LMk0DTa7dbNRayl48hu8-gdeigr6D-kfuU2rtNTgwsLOm_feDLOzgEjGCAxyvClQRHia8kTxLBTEnBlXOo3SGReaXOao8mP4ZDQgZ1zjHZ8fJy9Q3aIiQy54guo4359wkSAZiLFUGdepFOSci3j6F3ekZIR5vvPc5quemr3eXhOMlM_lW_lZrsqv6r6Xqy15j2Qk9aXrHeo1xvCwv3qTQ17zv1Ze1k-V_nX9aDw-yKDRAAsSlcbAtCrQggyNahPCYlMhBD3BDENg5hlzdR1CKJZGY6Z4JWX2I1OySCbAxnyam6iYxWY0u8__RRWKGFVfFkIDo-1OULkAW8A9MMexW9TtUMf2fddv-17XgrmBqdtyDR443bbJ-N3O0oKHqrDdCij1beoEjucHrud5FmCcaqmG2yWsdnH5Ddfo9Jc
 
 * VI. Занятие роли редактора | Получение права на редактирование изображение.
 
@@ -172,6 +182,8 @@
     - 5. Server Manager отправляет API Gateway информацию о том, что роль редактора была успешно выдана.
     - 6. API Gateway перенаправляет эту информацию пользователю.
 
+**Диграмма:**
+https://mermaid.live/edit#pako:eNqdktFKwzAUhl8lnOs62zXd2lwMREG8GAjijfQmrMeuaNOZpuocA4eIj-AD-AJjMBCG2yukb2TWqmxMb8xVzn_yf-ckOSPoZRECgxxvChQ9PEp4LHkaCmLWgEuV9JIBF4qc5yjzXfng9IQcc4V3fLibPEN5i5J0ueAxyjpfcfY6nQ0jI_pVT_WqfNTLckL0h54SvdJLvSifyhc9N8K7npPqwFTPas6G39C2K_0LuI3Y6fCtnBjEvHzer7l6ZqyL33qpbvinAyyIZRIBU7JAC1KUKV-HMFqzQlB9TDEEZrYRl1chhGJsPOY9L7Is_bbJrIj7wC75dW6iYhCZ6l9f96NKFBHKw6wQChhtNe2KAmwE98Acx25Qt0Ud2_ddv-l7bQuGRqZuwzV64LSbJuO3W2MLHqrCdiOg1LepEzieH7ie51mAUaIy2a1HqJqk8SevEO8g
 
 * VII. Освобождение роли редактора | Сдача прав на редактирование изображение.
 
@@ -180,6 +192,9 @@
   + 3. Server Manager снимает роль редактора с пользователя, запросившего снятие прав на редактирование изображения и сохраняет информацию об этом внутри себя.
   + 4. Server Manager отправляет API Gateway информацию о том, что роль редактора была успешно снята.
   + 5. API Gateway перенаправляет эту информацию всем пользователю.
+
+**Диграмма:**
+https://mermaid.live/edit#pako:eNqVks1Kw0AUhV9luOtYM2bSJLMoiIK4KAjiRrIZmmsaNJM6SdRaClZw7dIH8AVKoSBI7StM3shpotJSXTiruefwnXvnZwS9LELgkON1ibKHh4mIlUhDScwaCFUkvWQgZEHOclT5trx_ckyORIG3YrhtnqK6QUW6QooYVePXOTudzhrIiX7RU72sHvRHNSF6oaekmuhF9Vw96jc9J7U11bMmYY00OZs9_hm1CW9N9WrQpZ5XT7tNop4Z9P23KepT_UmABbFKIuCFKtGCFFUqViWMVlkhFH1MMQRutpFQlyGEcmwYc4fnWZZ-Yyor4z7wC3GVm6ocRKb713P9qAplhOogK2UBnHm0XacAH8EdcErtFnPajNq-7_h7vutZMDQyc1qO0QPq7RnH99pjC-7rxnYrYMy3GQ2o6weO6zILMEqKTHWbb1P_nvEnEz_lfQ
 
 ## План разработки и тестирования
 
