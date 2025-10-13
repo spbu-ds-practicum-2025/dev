@@ -92,109 +92,103 @@
 
 ## Технические сценарии
 
-* I. Обновление информации об изображении, привязанному к определённому серверу.
-  + 1. Processing Server отправляет изображение Change Information Handler.
-  + 2. Change Information Handler отправляет запрос в Server Manager на получение списка клиентов привязанных к Processing Server.
-  + 3. Server Manager возвращает этот список Change Information Handler.
-  + 4. Change Information Handler отправляет изображение и список пользователей в API Gateway.
-  + 5. API Gateway присылает созданное изображение всем клиентам, указанным в списке.
+**Сценарий I: Обновление информации об изображении, привязанному к определённому серверу.**
+1. Processing Server отправляет изображение Change Information Handler.
+2. Change Information Handler отправляет запрос в Server Manager на получение списка клиентов привязанных к Processing Server.
+3. Server Manager возвращает этот список Change Information Handler.
+4. Change Information Handler отправляет изображение и список пользователей в API Gateway.
+5. API Gateway присылает созданное изображение всем клиентам, указанным в списке.
 
-**Диграмма:**
-https://mermaid.live/edit#pako:eNqdk8Fq20AQhl9lmbNqLEuOJR0CJYU2h0Cg9BJ0WayJLBrtuiupbWoMUXIIOQVy6bGv4Ia6MaV1XmH2jTqyk2LjhprqpP1n9_t2pN0R9HWCEEGB7ypUfXyRydTIPFaCn6E0ZdbPhlKV4k2BptiMnx_ui5eyxA_ydLP4Gs17NOJAKpmi2azvDaRKUeyrY21yWWZaiVdSJSd_m3todB-L4oG5rK9nz3Z3nwZGgr7Q1J7RlL7RxF7SRNCM7mhOXzmc0Hcu_KKZvV6SnwaxZb0tJn9mwD1j5rYWtqZ75tT0gxX2ojHZ2p43cI7mdNvMmHJUczBb2taB_-rjhil3dNts2149bnvVy5Itulj5c1t_HI7_q8EVF5sXR2l754ZjQj_XHOBAarIEotJU6ECO3GwzhFFjj6EcYI4xRPyaSPM2hliNeQ0fqyOt88dlRlfpAKJjeVLwqBomvN-H2_AnNagSNHu6UiVEnY4fLigQjeAjRK7bbvneju-2g8ALOkG358Apx77X8jgP3V6HK0FvZ-zAp4W43Qp9P2j7buh2g9Drdn0HMMlKbQ6Wt3JxOce_Acg4oWo
+[![](https://mermaid.ink/img/pako:eNqdk8Fu00AQhl9lNWcTOdhxbB8qoSLRHipVQlyQL6t46litd8PaBkoUCcMBcULi0iOvECpCI0TTV5h9I8ZJixKlFRG-rPef2f-bsXfGMNApQgwlvqpRDfBpLjMji0QJfkbSVPkgH0lViRclmnJbfnJ8KJ7JCt_I8-3gczSv0YgjqWSGZju-P5QqQ3GoTrQpZJVrJQ6kSs_uyz02eoBleeu5im9qj_b2HjaMBX2jmX1PM_pBU_uJpoLmdEUL-s7ilH5y4Jrm9svK-WEjpmy2xc4XbHDDNgvbCNvQDfs09IsR9mNLso390JqztKDLNmPGUsPCfEXbNPxXH1_Z5You27Lt57uy17kM2aGLtT-388dh-b8aXGMxeXmVdmduMab0e4MBDmQmTyGuTI0OFMjNtlsYt_QEqiEWmEDMr6k0pwkkasJn-Fq91Lq4O2Z0nQ0hPpFnJe_qUcr13k7D3xRUKZp9XasK4t7SAeIxvIW423U7vhf4bhhFQS987HoOnLPsex2P9TCMAj_0vX5v4sC7JdTtRL4fun43CgJe-m7fAUzzSpuj1UQuB3PyB1E7oIc?type=png)](https://mermaid.live/edit#pako:eNqdk8Fu00AQhl9lNWcTOdhxbB8qoSLRHipVQlyQL6t46litd8PaBkoUCcMBcULi0iOvECpCI0TTV5h9I8ZJixKlFRG-rPef2f-bsXfGMNApQgwlvqpRDfBpLjMji0QJfkbSVPkgH0lViRclmnJbfnJ8KJ7JCt_I8-3gczSv0YgjqWSGZju-P5QqQ3GoTrQpZJVrJQ6kSs_uyz02eoBleeu5im9qj_b2HjaMBX2jmX1PM_pBU_uJpoLmdEUL-s7ilH5y4Jrm9svK-WEjpmy2xc4XbHDDNgvbCNvQDfs09IsR9mNLso390JqztKDLNmPGUsPCfEXbNPxXH1_Z5You27Lt57uy17kM2aGLtT-388dh-b8aXGMxeXmVdmduMab0e4MBDmQmTyGuTI0OFMjNtlsYt_QEqiEWmEDMr6k0pwkkasJn-Fq91Lq4O2Z0nQ0hPpFnJe_qUcr13k7D3xRUKZp9XasK4t7SAeIxvIW423U7vhf4bhhFQS987HoOnLPsex2P9TCMAj_0vX5v4sC7JdTtRL4fun43CgJe-m7fAUzzSpuj1UQuB3PyB1E7oIc)
 
-* II. Открытие сессии для редактирования нового изображения.
-  + 1. Клиент отправляет запрос в AGI Gateway с параметрами: логин клиента, длина/ширина изображения.
-  + 2. API Gateway перенаправляет запрос в Servic Manager.
-  + 3. Server Managar собирает информацию о состоянии серверов: какие сервера активны и какие не заняты другими пользователями.
-  + Если не существует активного свободного сервера:
-    - 4. Server Manager отправляет информацию об этом в API Gateway.
-    - 5. API Gateway отправляет информацию о недоступности сервера клиенту.
-  + B. Если существует активный свободный сервер:
-    - 4. Server Manager отправляет запрос на открытие сессии в свободный Processing Server.
-    - 5. Processing Server создаёт новое изображение указанной длины и ширины.
-    - 6. Processing Server отправляет информацию о создании изображения в Server Manager.
-    - 7. Server Manager помечает Processing Server как занятый.
-    - 8. Server Manager сохраняет информацию о том, что пользователем под таким-то логином открыл данную сессию и теперь привязан к такому-то серверу.
-    - 9. Server Manager отправляет информацию об открытии сервера в API Gateway.
-    - 10. API Gateway отправляет информацию об открытии сервера клиенту.
-    - 11. Обновление информации об изображении, привязанному к определённому серверу (сценарий I).
 
-**Диграмма:**
-https://mermaid.live/edit#pako:eNq9lM9u00AQxl9lNScQxoprO3F8qISKBD1UqoS4IF9W8daxqNdhbQMlipREiB44VJzgVKlvkFYNREDDK8y-EWMnVHUS_qgHfLB3Z3Z-33z2evvQSUMBPmTiRSFkRzyMeaR4EkhGV4-rPO7EPS5z9jQTKlsPP9jfZY94Ll7xo_XkE6FeCsX2uOSRUOv5nS6XkWC78iBVCc_jVLLHXIaHm9buq7QjsmzJXOSrnu5vb99owmf4ESf4Qw9xrkcMr3DCaDTGr3qo39NzhlOmRzjVI7rPcLYg3SAQr973LZF1CFHrDoh6hufEGTKqudJvyyF-x4l-VzJIoWSSIAnM9QmpltFKZogX1X2OFwupOnndwL82dBubf9NmeKrH-lh_0GPC4fkqc8XThN2h4JdyZTnDzzitrE8NRkXj5VuhBZeU_MbK8rHJ8NK8-xuT9b3xafVN65NlV5tEZ-zeho9zXfJnI5s2VrVh_28bYECk4hD8XBXCgETQn1ZOoV82GEDeFYkIwKdhyNXzAAI5oBr6556lafKrTKVF1AX_gB9mNCt6IVlaHhXXUSVkKNROWsgcfNu2mhUF_D68Bt-yGqZjNx2r4Xm2t-W5LQOOKOzYpk3xttXaoozXag4MeFMJN8y243gNx2pbrte2Xdc1QIRxnqq9xZFVnVyDn6S0Ruw
+**Сценарий II: Открытие сессии для редактирования нового изображения.**
+1. Клиент отправляет запрос в AGI Gateway с параметрами: логин клиента, длина/ширина изображения.
+2. API Gateway перенаправляет запрос в Servic Manager.
+3. Server Managar собирает информацию о состоянии серверов: какие сервера активны и какие не заняты другими пользователями.
+* Если не существует активного свободного сервера:
+4. Server Manager отправляет информацию об этом в API Gateway.
+5. API Gateway отправляет информацию о недоступности сервера клиенту.
+* Если существует активный свободный сервер:
+4. Server Manager отправляет запрос на открытие сессии в свободный Processing Server.
+5. Processing Server создаёт новое изображение указанной длины и ширины.
+6. Processing Server отправляет информацию о создании изображения в Server Manager.
+7. Server Manager помечает Processing Server как занятый.
+8. Server Manager сохраняет информацию о том, что пользователем под таким-то логином открыл данную сессию и теперь привязан к такому-то серверу.
+9. Server Manager отправляет информацию об открытии сервера в API Gateway.
+10. API Gateway отправляет информацию об открытии сервера клиенту.
+11. Обновление информации об изображении, привязанному к определённому серверу (сценарий I).
 
-* III. Запрос списка открытых сессий.
+[![](https://mermaid.ink/img/pako:eNq9VE1v00AQ_SurOYEwlls7ie1DJVQk6KFSJcQF-bKKt45FvQ5rGyhRpMRC9MCh4gQnJP5BWjUQAQ1_YfYfMXZCVSfhQz3gw3p3Zt578-zdHUA3DQX4kIlnhZBdcT_mkeJJIBk9fa7yuBv3uczZ40yobD1872CPPeC5eMGP15OPhHouFNvnkkdCred3e1xGgu3Jw1QlPI9TyR5yGR5tqj1QaVdk2ZJzka97uruzc60Jn-F7nOAPPcK5HjO8xAmjWYlf9Ui_pfcMp0yPcarHNM5wtmC6xkB8zb5vSNkkIdamA2L9hGfEM2KEudSvqyl-x4l-U3GQQsVJgiQw16ekWkVrmRGe1-MczxdSTeZ1A__a0E1s_k2b4Udd6hP9TpdEh2ernCueJuwWBb9UldUKP-O0tj41GIHK5VehggtKfmMVvDQZXpi3f2OyuTc-rH5pfbrsapPojN3Z8HOuIH82smlj1Rv2_7YBBkQqDsHPVSEMSASdtGoJg6rBAPKeSEQAPk1Drp4GEMghYejMPUnT5BdMpUXUA_-QH2W0KvohWVpeFVclQoZC7aaFzMH3agbwB_AS_K0ty3TstmO5ntduuduWbcAxhR3btCnuul7bcR270xoa8KoWtUzPcVzL2W51nI5lE9AAEcZ5qvYX11V9aw1_AppeRg0?type=png)](https://mermaid.live/edit#pako:eNq9VE1v00AQ_SurOYEwlls7ie1DJVQk6KFSJcQF-bKKt45FvQ5rGyhRpMRC9MCh4gQnJP5BWjUQAQ1_YfYfMXZCVSfhQz3gw3p3Zt578-zdHUA3DQX4kIlnhZBdcT_mkeJJIBk9fa7yuBv3uczZ40yobD1872CPPeC5eMGP15OPhHouFNvnkkdCred3e1xGgu3Jw1QlPI9TyR5yGR5tqj1QaVdk2ZJzka97uruzc60Jn-F7nOAPPcK5HjO8xAmjWYlf9Ui_pfcMp0yPcarHNM5wtmC6xkB8zb5vSNkkIdamA2L9hGfEM2KEudSvqyl-x4l-U3GQQsVJgiQw16ekWkVrmRGe1-MczxdSTeZ1A__a0E1s_k2b4Udd6hP9TpdEh2ernCueJuwWBb9UldUKP-O0tj41GIHK5VehggtKfmMVvDQZXpi3f2OyuTc-rH5pfbrsapPojN3Z8HOuIH82smlj1Rv2_7YBBkQqDsHPVSEMSASdtGoJg6rBAPKeSEQAPk1Drp4GEMghYejMPUnT5BdMpUXUA_-QH2W0KvohWVpeFVclQoZC7aaFzMH3agbwB_AS_K0ty3TstmO5ntduuduWbcAxhR3btCnuul7bcR270xoa8KoWtUzPcVzL2W51nI5lE9AAEcZ5qvYX11V9aw1_AppeRg0)
 
-  + 1. Клиент отправляет запрос в API Gateway на получение списка открытых сессий.
-  + 2. API Gateway отправляет запрос Server Manager на получение списка открытых сессий.
-  + 3. Server Manager собирает информацию о том, какие сервера на данный момент выделены под сессии (на каждый сервер - одна сессия).
-  + 4. Server Manager отправляет список активных сессий в API Gateway.
-  + 5. API Gateway отправляет список активных сессий пользователю.
 
-**Диграмма:**
-https://mermaid.live/edit#pako:eNq1U81O20AQfpXVnE0UY5s4PiAhkCgHJKSql8qXVTw4Fng3Xdu0NIoE_T1w4MiZNwgRkSIg5hV234ixk1ZYCUcseez5Zvb7ZnZnh9CTEUIAGX4pUPRwL-Gx4mkoGD0DrvKklwy4yNmnDFW2Cu8cHbB9nuNXfr4a_IjqDBU75ILHqFbju30uYmQH4liqlOeJFOwDF9HputwjJXuYZUvORbyuaWN7-1URAdM3eqyfzYUuzSXTcz1m-lmX-tH8NH_1lICZnjJzSeCM7APF6TOhjDt67_XcXJnfFTQlikltSz1Z6L3SIdVmd-8q3JQi7eZukPZtxWIuGInMza_qVz_psflD_ozpsuKlsswPstd1KbM3pJrMa9p8o6LmGdwuuyz1w7qtqw-umQYWxCqJIMhVgRakSBNRuTCsCELI-5hiCKQPEVcnIYRiRGtoNj5Lmf5bpmQR9yE45qcZecUgIsnlSP9HFYoI1a4sRA6B0_GdmgWCIXyDwLbbLdfZcu227zv-pu91LDgn2HVaDuFdu7NJEb-zNbLgey3cbnVd12-7dtf2_K7jeZ4FGCW5VIeLq1XfsNELPbB87w
+**Сценарий III: Запрос списка открытых сессий.**
+1. Клиент отправляет запрос в API Gateway на получение списка открытых сессий.
+2. API Gateway отправляет запрос Server Manager на получение списка открытых сессий.
+3. Server Manager собирает информацию о том, какие сервера на данный момент выделены под сессии (на каждый сервер - одна сессия).
+4. Server Manager отправляет список активных сессий в API Gateway.
+5. API Gateway отправляет список активных сессий пользователю.
 
-* IV. Запрос на подключение к сессии.
+[![](https://mermaid.ink/img/pako:eNq1U81q20AQfpVlzqqRq7Ur6RAoKSQ5BAKll6LLYk1k0WjXXUlJU2NI-nvIIcec8wauqcGktfIKu2_UkeyUCDvHCDTSfDP7fTO7s2MYqBghhBw_ligH-CYViRZZJBk9I6GLdJCOhCzYuxx1vgm_Pjpge6LAM3G-GXyL-hQ1OxRSJKg347tDIRNkB_JY6UwUqZJsX8j4ZFvukVYDzPM15yre1PRiZ-dRESEzN2Zq7u2FqewlM0szZebeVOaP_Wp_mjkBCzNn9pLABdk7itNnRhm_6P1tlvbKfq-hOVHMGluZ2UrvkQ6ptrt7VuG2FGm3d4O0b2sWe8FIZGm_1b_mr5naH-QvmKlqXirLfiF73ZSyeEKqzbylzScqap_B7brLytxt27rm4Npp4ECi0xjCQpfoQIY0EbUL45oggmKIGUZA-hAL_SGCSE5oDc3Ge6Wyh2ValckQwmNxkpNXjmKSXI_0_xSUMepdVcoCwqBhgHAMnyDsdt0O9_rc9YOg3_Nfup4D5wRzr-MR7vtBn_vce9WbOPC5EXU7Aee-yz3e9fpe13V7DmCcFkofrq5Vc7sm_wBWSHv1?type=png)](https://mermaid.live/edit#pako:eNq1U81q20AQfpVlzqqRq7Ur6RAoKSQ5BAKll6LLYk1k0WjXXUlJU2NI-nvIIcec8wauqcGktfIKu2_UkeyUCDvHCDTSfDP7fTO7s2MYqBghhBw_ligH-CYViRZZJBk9I6GLdJCOhCzYuxx1vgm_Pjpge6LAM3G-GXyL-hQ1OxRSJKg347tDIRNkB_JY6UwUqZJsX8j4ZFvukVYDzPM15yre1PRiZ-dRESEzN2Zq7u2FqewlM0szZebeVOaP_Wp_mjkBCzNn9pLABdk7itNnRhm_6P1tlvbKfq-hOVHMGluZ2UrvkQ6ptrt7VuG2FGm3d4O0b2sWe8FIZGm_1b_mr5naH-QvmKlqXirLfiF73ZSyeEKqzbylzScqap_B7brLytxt27rm4Npp4ECi0xjCQpfoQIY0EbUL45oggmKIGUZA-hAL_SGCSE5oDc3Ge6Wyh2ValckQwmNxkpNXjmKSXI_0_xSUMepdVcoCwqBhgHAMnyDsdt0O9_rc9YOg3_Nfup4D5wRzr-MR7vtBn_vce9WbOPC5EXU7Aee-yz3e9fpe13V7DmCcFkofrq5Vc7sm_wBWSHv1)
 
-  + 1. Клиент отправляет запрос на подключение к определённому серверу в API Gateway.
-  + 2. API Gateway перенаправляет запрос в Server Manager.
-  + 3. Server Manager смотрит, занят ли сервер, к которому запрашивают подключение.
-  + A. Если сервер не занят (сессия успела закончится):
-    - 4. Server Manager отправляет информацию о закрытии сервера API Gateway.
-    - 5. API Gateway отправляет информацию о закрытии сервера клиенту.
-  + B. Если сервер занят:
-    - 4. Server Manager смотрит, кто из пользователей открыл сессию.
-    - 5. Server Manager отправляет в API Gateway запрос на подключение к сессии с информацией о том, кто запросил это подключение и кто открыл сессию на сервере.
-    - 6. API Gateway отправляет пользователю, открывшему сессию на сервере, запрос на подключение к сессии пользователя, запросившего подключение к серверу.
-  + C. Создатель сессии отклонил запрос или не ответил на него в течении определённого времени.
-    - 7. API Gateway получает и отправляет информацию об отклоненному запросе клиенту, запросившему подключение к серверу.
+
+**Сценарий IV: Запрос на подключение к сессии.**
+1. Клиент отправляет запрос на подключение к определённому серверу в API Gateway.
+2. API Gateway перенаправляет запрос в Server Manager.
+3. Server Manager смотрит, занят ли сервер, к которому запрашивают подключение.
+* A. Если сервер не занят (сессия успела закончится):
+4. Server Manager отправляет информацию о закрытии сервера API Gateway.
+5. API Gateway отправляет информацию о закрытии сервера клиенту.
+* B. Если сервер занят:
+4. Server Manager смотрит, кто из пользователей открыл сессию.
+5. Server Manager отправляет в API Gateway запрос на подключение к сессии с информацией о том, кто запросил это подключение и кто открыл сессию на сервере.
+6. API Gateway отправляет пользователю, открывшему сессию на сервере, запрос на подключение к сессии пользователя, запросившего подключение к серверу.
+* C. Создатель сессии отклонил запрос или не ответил на него в течении определённого времени.
+7. API Gateway получает и отправляет информацию об отклоненному запросе клиенту, запросившему подключение к серверу.
   + D. Создатель сессии принял запрос.
-    - 7. API Gateway получает и отправляет информацию об принятом запросе клиенту, запросившему подключение к серверу.
-    - 8. API Gateway отправляет информацию об принятии запроса в Server Manager.
-    - 9. Server Manager добавляет пользователя в список участников сессии, открытой на этом сервере.
-    - 10. Обновление информации об изображении, привязанному к определённому серверу (сценарий I).
+7. API Gateway получает и отправляет информацию об принятом запросе клиенту, запросившему подключение к серверу.
+8. API Gateway отправляет информацию об принятии запроса в Server Manager.
+9. Server Manager добавляет пользователя в список участников сессии, открытой на этом сервере.
+10. Обновление информации об изображении, привязанному к определённому серверу (сценарий I).
 
-**Диграмма:**
-https://mermaid.live/edit#pako:eNqVk89K60AUxl9lOOtaG5PaJAtBFNSFIIgbyWZojmnQzNRJ4r1aCgre687tXV98gSoWxD_tK5y8kadpFUPrwixCznfy_c6XmUwP2jpE8CHF0xxVGzdjGRmZBErw1ZUmi9txV6pMHKRo0nl5fW9HbMkMf8nz-eY-mjM0YlcqGaGZ7290pIpQ7KgjbRKZxVqJbanCk0Xv7hndxjSdMaf9MtPS2tqXEL6gfzSgcXFJo-JK0BsNBI1pRI_0TC_FbXFDQxafaDhFfLEyqBr4p6yqm3HVzIz7T_eMuhTseSuuJ4_0SoPiL9dPgkaiuKIhaw_lfUatQhaE_GZ4dVHuGD1m7J_l6ffwjAG9LFqDclG_dUANIhOH4GcmxxokyBs3KaE3YQWQdTDBADgVhNIcBxCoPnt4Cw-1Tj5sRudRB_wjeZJylXdDnj778z5VgypEs6FzlYFve55TUsDvwW_wLatRd-xVx2q4ru2uuM1WDc5Zduy6zbpntVa447ZW-zW4KAc36p7juA3H8qym69nNJvMwjDNtdqcnoDwI_Xepaz9l
+[![](https://mermaid.ink/img/pako:eNqVk81O20AQx19lNWeTOngTbB-QEJWAAxJS1UvlyyoeHAu8G9Y2LY0igdSPW689V32BFBEJ8ZG8wviNmDgpwko44IPlmdn_b_6e3R1Cz8QIIeR4VqLu4ftUJVZlkRb8DJQt0l46ULoQH3O0-Wp65-hA7KkCP6uL1eIHtOdoxaHSKkG7Wt_tK52gONDHxmaqSI0W-0rHp-vWHlnTwzxfMhf12tPG9vYLE6Gg3zSmWXVJ0-pK0CONBc1oSjd0R_fVr-onTTh5S5MF4oWUQU3Db2U11YxrembcH_rHqEvBmsfq2_yTHmhc_eD4VtBUVFc04dx1_V5Sm5A1Jl9p3hzKX0bPGPv93eJ_uMeY7tfNoB7qqwpwILFpDGFhS3QgQ964eQjDOSuCoo8ZRsCuIFb2JIJIj1jDW_jJmOy_zJoy6UN4rE5zjspBzN2XJ-95CeoY7a4pdQFhUBMgHMIXCNtttyW9rnT9IOh2_E3Xc-CC09JreZz3_aArfeltdUYOfK2buq1ASt-Vntzq-K7vtjcdwDgtjD1cnP76EoyeALgRPnQ?type=png)](https://mermaid.live/edit#pako:eNqVk81O20AQx19lNWeTOngTbB-QEJWAAxJS1UvlyyoeHAu8G9Y2LY0igdSPW689V32BFBEJ8ZG8wviNmDgpwko44IPlmdn_b_6e3R1Cz8QIIeR4VqLu4ftUJVZlkRb8DJQt0l46ULoQH3O0-Wp65-hA7KkCP6uL1eIHtOdoxaHSKkG7Wt_tK52gONDHxmaqSI0W-0rHp-vWHlnTwzxfMhf12tPG9vYLE6Gg3zSmWXVJ0-pK0CONBc1oSjd0R_fVr-onTTh5S5MF4oWUQU3Db2U11YxrembcH_rHqEvBmsfq2_yTHmhc_eD4VtBUVFc04dx1_V5Sm5A1Jl9p3hzKX0bPGPv93eJ_uMeY7tfNoB7qqwpwILFpDGFhS3QgQ964eQjDOSuCoo8ZRsCuIFb2JIJIj1jDW_jJmOy_zJoy6UN4rE5zjspBzN2XJ-95CeoY7a4pdQFhUBMgHMIXCNtttyW9rnT9IOh2_E3Xc-CC09JreZz3_aArfeltdUYOfK2buq1ASt-Vntzq-K7vtjcdwDgtjD1cnP76EoyeALgRPnQ)
 
-* V. Внесение изменения в изображение. (Для избежания конфликтов в программе пользователи редактируют изображение по очереди. Когда пользователь заканчивает редактировать изображение и подтвержает окончание своей очереди, он освобождает роль редактора изображения. В этот момент любой другой пользователь может занять роль редактора и начать изменять изображение. Пользователь без роли редактора не может вносить изменения в изображения, но может наблюдать за тем, что делает редактор.)
 
-  + 1. Пользователь как-либо редактирует изображение в свойм клиентском приложении.
-  + 2. Клиентское приложение отправляет информацию об изменении API Gateway.
-  + 3. API Gateway отправляет эту информацию Change Information Handler.
-  + 4. Change Information Handler отправляет эту информацию на нужный Processing Server.
-  + 5. Processing Server обрабатывает изменения и применяет их к изображению.
-  + 6. Обновление информации об изображении, привязанному к определённому серверу (сценарий I).
+**Сценарий V: Внесение изменения в изображение. (Для избежания конфликтов в программе пользователи редактируют изображение по очереди. Когда пользователь заканчивает редактировать изображение и подтвержает окончание своей очереди, он освобождает роль редактора изображения. В этот момент любой другой пользователь может занять роль редактора и начать изменять изображение. Пользователь без роли редактора не может вносить изменения в изображения, но может наблюдать за тем, что делает редактор.)**
+1. Пользователь как-либо редактирует изображение в свойм клиентском приложении.
+2. Клиентское приложение отправляет информацию об изменении API Gateway.
+3. API Gateway отправляет эту информацию Change Information Handler.
+4. Change Information Handler отправляет эту информацию на нужный Processing Server.
+5. Processing Server обрабатывает изменения и применяет их к изображению.
+6. Обновление информации об изображении, привязанному к определённому серверу (сценарий I).
 
-**Диграмма:**
-https://mermaid.live/edit#pako:eNqFUsFKw0AQ_ZVlLr2kJWk2bbKHglTQHgoF8SK5LMk0DTa7dbNRayl48hu8-gdeigr6D-kfuU2rtNTgwsLOm_feDLOzgEjGCAxyvClQRHia8kTxLBTEnBlXOo3SGReaXOao8mP4ZDQgZ1zjHZ8fJy9Q3aIiQy54guo4359wkSAZiLFUGdepFOSci3j6F3ekZIR5vvPc5quemr3eXhOMlM_lW_lZrsqv6r6Xqy15j2Qk9aXrHeo1xvCwv3qTQ17zv1Ze1k-V_nX9aDw-yKDRAAsSlcbAtCrQggyNahPCYlMhBD3BDENg5hlzdR1CKJZGY6Z4JWX2I1OySCbAxnyam6iYxWY0u8__RRWKGFVfFkIDo-1OULkAW8A9MMexW9TtUMf2fddv-17XgrmBqdtyDR443bbJ-N3O0oKHqrDdCij1beoEjucHrud5FmCcaqmG2yWsdnH5Ddfo9Jc
+[![](https://mermaid.ink/img/pako:eNqFUsFKw0AQ_ZVlLr2kJTXbNtlDQSpoD4WCeJFcluw0DTa7dbNRayl48hu8-gdeihX0H9I_cptWaanBhYWdmffePGZnDpESCAwyvM1RRniW8FjzNJTEninXJomSKZeGXGWos-P06bBPzrnBez47Ll6ivkNNBlzyGPVxvTfmMkbSlyOlU24SJckFl2LyF3aoVYRZttPc1ktP9W53zwQjxUvxXnwWy-KrvKtiuQXvgSylunW1QjXHCh76qxY5xNX_s_K6fi75b-snq_FB-rUaOBDrRAAzOkcHUrSsTQjzTYcQzBhTDIHZp-D6JoRQLizHTvFaqfSHplUej4GN-CSzUT4VdjS7z_-FoBSoeyqXBlhQKgCbwwOwZtNtUK9NXT8I2i3_xPUcmNk09Rqezft-0KY-9TqthQOPZVO3EVDqu5Q2LbhFOx2rhyIxSg-2C1ju4eIbEzfzrQ?type=png)](https://mermaid.live/edit#pako:eNqFUsFKw0AQ_ZVlLr2kJTXbNtlDQSpoD4WCeJFcluw0DTa7dbNRayl48hu8-gdeihX0H9I_cptWaanBhYWdmffePGZnDpESCAwyvM1RRniW8FjzNJTEninXJomSKZeGXGWos-P06bBPzrnBez47Ll6ivkNNBlzyGPVxvTfmMkbSlyOlU24SJckFl2LyF3aoVYRZttPc1ktP9W53zwQjxUvxXnwWy-KrvKtiuQXvgSylunW1QjXHCh76qxY5xNX_s_K6fi75b-snq_FB-rUaOBDrRAAzOkcHUrSsTQjzTYcQzBhTDIHZp-D6JoRQLizHTvFaqfSHplUej4GN-CSzUT4VdjS7z_-FoBSoeyqXBlhQKgCbwwOwZtNtUK9NXT8I2i3_xPUcmNk09Rqezft-0KY-9TqthQOPZVO3EVDqu5Q2LbhFOx2rhyIxSg-2C1ju4eIbEzfzrQ)
 
-* VI. Занятие роли редактора | Получение права на редактирование изображение.
 
-  + 1. Клиент отправляет запрос API Gateway на получение права редактировать изображение.
-  + 2. API Gateway передаёт запрос Server Manager.
-  + 3. Server Manager смотрит, занята ли роль редактора на определённом сервере.
-  
-  + A. Роль редактора занята:
-    - 4. Server Manager отправляет API Gateway информацию о том, что роль редактора занята.
-    - 5. API Gateway перенаправляет информацию пользователю.
-  + B. Роль редактора не занята.
-    - 4. Server Manager выдаёт роль редактора пользователю, запросившему права на редактирование изобраения и сохраняет информацию об этом внутри себя.
-    - 5. Server Manager отправляет API Gateway информацию о том, что роль редактора была успешно выдана.
-    - 6. API Gateway перенаправляет эту информацию пользователю.
+**Сценарий VI: Занятие роли редактора | Получение права на редактирование изображение.**
+1. Клиент отправляет запрос API Gateway на получение права редактировать изображение.
+2. API Gateway передаёт запрос Server Manager.
+3. Server Manager смотрит, занята ли роль редактора на определённом сервере.
+* A. Роль редактора занята:
+4. Server Manager отправляет API Gateway информацию о том, что роль редактора занята.
+5. API Gateway перенаправляет информацию пользователю.
+* B. Роль редактора не занята.
+4. Server Manager выдаёт роль редактора пользователю, запросившему права на редактирование изобраения и сохраняет информацию об этом внутри себя.
+5. Server Manager отправляет API Gateway информацию о том, что роль редактора была успешно выдана.
+6. API Gateway перенаправляет эту информацию пользователю.
 
-**Диграмма:**
-https://mermaid.live/edit#pako:eNqdktFKwzAUhl8lnOs62zXd2lwMREG8GAjijfQmrMeuaNOZpuocA4eIj-AD-AJjMBCG2yukb2TWqmxMb8xVzn_yf-ckOSPoZRECgxxvChQ9PEp4LHkaCmLWgEuV9JIBF4qc5yjzXfng9IQcc4V3fLibPEN5i5J0ueAxyjpfcfY6nQ0jI_pVT_WqfNTLckL0h54SvdJLvSifyhc9N8K7npPqwFTPas6G39C2K_0LuI3Y6fCtnBjEvHzer7l6ZqyL33qpbvinAyyIZRIBU7JAC1KUKV-HMFqzQlB9TDEEZrYRl1chhGJsPOY9L7Is_bbJrIj7wC75dW6iYhCZ6l9f96NKFBHKw6wQChhtNe2KAmwE98Acx25Qt0Ud2_ddv-l7bQuGRqZuwzV64LSbJuO3W2MLHqrCdiOg1LepEzieH7ie51mAUaIy2a1HqJqk8SevEO8g
+[![](https://mermaid.ink/img/pako:eNqdktFKwzAUhl8lnOs6uzXb0lwMREG8GAjijfQmrMeuaNOZpuocA4eIj-AD-AJjMBCG2yukb2TWqmxMb8xV8p_zf-ckOSPopSEChwxvcpQ9PIpFpEQSSGLXQCgd9-KBkJqcZ6iyXfng9IQcC413YrgbPEN1i4p0hRQRqipecvY6nQ0jJ-bVTM2qeDTLYkLMh5kSszJLsyieihczt8K7mZMyYWpmFWfDb2nblf4F3EbsdPhWTCxiXjzvV1wzs9bFb72UN_zTAQ5EKg6Ba5WjAwmqRKyPMFqzAtB9TDAAbrehUFcBBHJsPfY9L9I0-bapNI_6wC_FdWZP-SC01b--7icFZYjqMM2lBu6XBOAjuAder7s16rWoy3y_1WQN13NgaGXq1TyrM-a3KKNeuzl24KEs6tZ8SplLPb_BPL_ZaNcdwDDWqepW41NO0fgTBLPuRg?type=png)](https://mermaid.live/edit#pako:eNqdktFKwzAUhl8lnOs6uzXb0lwMREG8GAjijfQmrMeuaNOZpuocA4eIj-AD-AJjMBCG2yukb2TWqmxMb8xV8p_zf-ckOSPopSEChwxvcpQ9PIpFpEQSSGLXQCgd9-KBkJqcZ6iyXfng9IQcC413YrgbPEN1i4p0hRQRqipecvY6nQ0jJ-bVTM2qeDTLYkLMh5kSszJLsyieihczt8K7mZMyYWpmFWfDb2nblf4F3EbsdPhWTCxiXjzvV1wzs9bFb72UN_zTAQ5EKg6Ba5WjAwmqRKyPMFqzAtB9TDAAbrehUFcBBHJsPfY9L9I0-bapNI_6wC_FdWZP-SC01b--7icFZYjqMM2lBu6XBOAjuAder7s16rWoy3y_1WQN13NgaGXq1TyrM-a3KKNeuzl24KEs6tZ8SplLPb_BPL_ZaNcdwDDWqepW41NO0fgTBLPuRg)
 
-* VII. Освобождение роли редактора | Сдача прав на редактирование изображение.
 
-  + 1. Клиент подаёт API Gateway запрос о передаче очереди редактировать изображение.
-  + 2. API Gateway передаёт информацию об этом Server Manager
-  + 3. Server Manager снимает роль редактора с пользователя, запросившего снятие прав на редактирование изображения и сохраняет информацию об этом внутри себя.
-  + 4. Server Manager отправляет API Gateway информацию о том, что роль редактора была успешно снята.
-  + 5. API Gateway перенаправляет эту информацию всем пользователю.
+**Сценарий VII: Освобождение роли редактора | Сдача прав на редактирование изображение.**
+1. Клиент подаёт API Gateway запрос о передаче очереди редактировать изображение.
+2. API Gateway передаёт информацию об этом Server Manager
+3. Server Manager снимает роль редактора с пользователя, запросившего снятие прав на редактирование изображения и сохраняет информацию об этом внутри себя.
+4. Server Manager отправляет API Gateway информацию о том, что роль редактора была успешно снята.
+5. API Gateway перенаправляет эту информацию всем пользователю.
 
-**Диграмма:**
-https://mermaid.live/edit#pako:eNqVks1Kw0AUhV9luOtYM2bSJLMoiIK4KAjiRrIZmmsaNJM6SdRaClZw7dIH8AVKoSBI7StM3shpotJSXTiruefwnXvnZwS9LELgkON1ibKHh4mIlUhDScwaCFUkvWQgZEHOclT5trx_ckyORIG3YrhtnqK6QUW6QooYVePXOTudzhrIiX7RU72sHvRHNSF6oaekmuhF9Vw96jc9J7U11bMmYY00OZs9_hm1CW9N9WrQpZ5XT7tNop4Z9P23KepT_UmABbFKIuCFKtGCFFUqViWMVlkhFH1MMQRutpFQlyGEcmwYc4fnWZZ-Yyor4z7wC3GVm6ocRKb713P9qAplhOogK2UBnHm0XacAH8EdcErtFnPajNq-7_h7vutZMDQyc1qO0QPq7RnH99pjC-7rxnYrYMy3GQ2o6weO6zILMEqKTHWbb1P_nvEnEz_lfQ
+[![](https://mermaid.ink/img/pako:eNqVkkFLwzAUx79KeOc6O5tuaQ4DURAPA0G8SC9hfXZFm840VecYOMGzRz-AX2AMBoLMfYX0G5m1KhvTgznl_V9-__eSvBH0sgiBQ47XBcoeHiYiViINJbFrIJROeslASE3OclT5trx_ckyOhMZbMdxOnqK6QUW6QooYVZ2vfHY6nTWQE_NipmZZPpiPckLMwkxJOTGL8rl8NG9mTqrU1MxqhzXS-mzW-KfVJrzV1atFl2ZePu3WjmZm0fffuqhu9ScBDsQqiYBrVaADKapUrEIYrbxC0H1MMQRut5FQlyGEcmwZ-4bnWZZ-Yyor4j7wC3GV26gYRLb613f9HEEZoTrICqmBB5UD8BHcAW823Qb1WtRlQdDy2Z7rOTC0MvUantUZC1qUUa_tjx24r4q6jYBS5lKPMb_dZMzzHcAo0Znq1iNTTc74E43T5KU?type=png)](https://mermaid.live/edit#pako:eNqVkkFLwzAUx79KeOc6O5tuaQ4DURAPA0G8SC9hfXZFm840VecYOMGzRz-AX2AMBoLMfYX0G5m1KhvTgznl_V9-__eSvBH0sgiBQ47XBcoeHiYiViINJbFrIJROeslASE3OclT5trx_ckyOhMZbMdxOnqK6QUW6QooYVZ2vfHY6nTWQE_NipmZZPpiPckLMwkxJOTGL8rl8NG9mTqrU1MxqhzXS-mzW-KfVJrzV1atFl2ZePu3WjmZm0fffuqhu9ScBDsQqiYBrVaADKapUrEIYrbxC0H1MMQRut5FQlyGEcmwZ-4bnWZZ-Yyor4j7wC3GV26gYRLb613f9HEEZoTrICqmBB5UD8BHcAW823Qb1WtRlQdDy2Z7rOTC0MvUantUZC1qUUa_tjx24r4q6jYBS5lKPMb_dZMzzHcAo0Znq1iNTTc74E43T5KU)
+
 
 ## План разработки и тестирования
 
