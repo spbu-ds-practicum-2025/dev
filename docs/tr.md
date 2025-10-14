@@ -132,19 +132,29 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant Users
+    participant Client
     participant API Gateway
     participant Server Manager
-    participant Change Information Handler
-    participant Process Server
-    Users->>API Gateway: Запрос на открытие сессии
-    API Gateway->>Server Manager: Запрос на открытие сессии
-    Server Manager->>Process Server: Сбор информации о состоянии серверов
-    Process Server->>Server Manager:
-    Server Manager->>Process Server: Запрос на открытие сессии
-    Process Server->>Server Manager: Отчёт об открытии сервера (изображение, кто создал и т. д.)
-    Server Manager->>API Gateway: Информация об изображении + информация об открытии сервера
-    API Gateway->>Users: Информация об изображении + информация об открытии сервера
+    participant Processing Server
+
+    Client->>API Gateway: Открыть сессию (логин, ширина, высота)
+    API Gateway->>Server Manager: Открыть сессию (логин, ширина, высота)
+    Server Manager->>Server Manager: Сбор информации о состоянии серверов\n(активные, свободные)
+
+    alt Нет свободных активных серверов
+        Server Manager-->>API Gateway: Нет свободных серверов
+        API Gateway-->>Client: Сервер недоступен
+    else Есть свободный активный сервер
+        Server Manager->>Processing Server: Открыть сессию для пользователя\n(логин, ширина, высота)
+        Processing Server->>Processing Server: Создать новое изображение (W×H)
+        Processing Server-->>Server Manager: Изображение создано (imageId, размеры)
+        Server Manager->>Server Manager: Пометить сервер занятым
+        Server Manager->>Server Manager: Сохранить привязку логин ↔️ сервер ↔️ сессия
+        Server Manager-->>API Gateway: Сессия открыта + инфо об изображении
+        API Gateway-->>Client: Сессия открыта + инфо об изображении
+    end
+
+    Note over Client,API Gateway: Обновление информации об изображении — см. Сценарий I
 ```
 
 **Сценарий III: Запрос списка открытых сессий.**
@@ -190,17 +200,27 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant Users
+    participant Client 
     participant API Gateway
     participant Server Manager
-    participant Change Information Handler
-    participant Process Server
-    Users->>API Gateway: Запрос на подключение
-    API Gateway->>Server Manager: Запрос на подключение
-    Server Manager->>Process Server: Сбор информации о сервере
-    Process Server->>Server Manager: 
-    Server Manager->>API Gateway: Успех/провал
-    API Gateway->>Users: Успех/провал
+
+    Client ->> API Gateway: Запрос на подключение к серверу
+    API Gateway ->> Server Manager: Передача запроса
+    alt Сервер не занят (сессия закончилась)
+        Server Manager -->> API Gateway: Сервер закрыт / свободен
+        API Gateway -->> Client: Сообщение о закрытии сервера
+    else Сервер занят
+        Server Manager ->> Server Manager: Проверка пользователя, открыл сессию
+        alt Создатель сессии не ответил или отклонил
+            Server Manager -->> API Gateway: Создатель отклонил / не ответил
+            API Gateway -->> Client: Запрос отклонён
+        else Создатель сессии принял
+            Server Manager ->> Server Manager: Добавление пользователя в сессию
+            Server Manager -->> API Gateway: Пользователь добавлен
+            API Gateway -->> Client: Подключение к сессии одобрено
+            API Gateway ->> Server Manager: Обновление информации об изображении
+        end
+    end
 ```
 
 **Сценарий V: Внесение изменения в изображение. (Для избежания конфликтов в программе пользователи редактируют изображение по очереди. Когда пользователь заканчивает редактировать изображение и подтвержает окончание своей очереди, он освобождает роль редактора изображения. В этот момент любой другой пользователь может занять роль редактора и начать изменять изображение. Пользователь без роли редактора не может вносить изменения в изображения, но может наблюдать за тем, что делает редактор.)**
@@ -238,13 +258,23 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant Users
-    participant API Gateway
+    participant Client 
+    participant API Gateway 
     participant Server Manager
-    Users->>API Gateway: Запрос на получение прав
-    API Gateway->>Server Manager: Запрос на получение прав
-    Server Manager->>API Gateway: Успех/провал
-    API Gateway->>Users: Успех/провал
+
+    Client->> API Gateway: Запрос на получение права редактировать изображение
+    API Gateway ->> Server Manager: Передача запроса
+
+    alt Роль редактора занята
+        Server Manager -->> API Gateway: Информация о занятости роли
+        API Gateway -->> Client: Роль редактора занята
+    else Роль редактора свободна
+        Server Manager ->> Server Manager: Проверка занятости роли
+        Server Manager -->> Server Manager: Роль свободна
+        Server Manager ->> Server Manager: Выдача права редактирования и сохранение информации
+        Server Manager -->> API Gateway: Роль редактора выдана успешно
+        API Gateway -->> Client: Право получено
+    end
 ```
 
 **Сценарий VII: Освобождение роли редактора | Сдача прав на редактирование изображение.**
@@ -256,13 +286,16 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant Users
+    participant Client 
     participant API Gateway
     participant Server Manager
-    Users->>API Gateway: Запрос на снятие прав
-    API Gateway->>Server Manager: Запрос на снятие прав
-    Server Manager->>API Gateway: Успех/провал
-    API Gateway->>Users: Успех/провал
+
+    Client ->> API Gateway: Запрос о передаче очереди редактировать изображение
+    API Gateway ->> Server Manager: Передача запроса
+    Server Manager ->> Server Manager: Снятие роли редактора и сохранение информации
+    Server Manager -->> API Gateway: Роль редактора успешно снята
+    API Gateway -->> Client: Подтверждение снятия прав
+    API Gateway -->> Client: Сообщение всем пользователям о сдаче прав
 ```
 
 ## План разработки и тестирования
