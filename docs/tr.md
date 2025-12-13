@@ -50,33 +50,43 @@
 
 ## Пользовательские сценарии
 
-* I. Просмотр изображения:
-  + 1. В графическом интерфейсе пользователь выбирает нужный файл с изображением и нажимает на поле "открыть".
-  + 2. Пользовательский интерфейс отправляет запрос на сервер для получения изображения.
-  + 3. Сервер отправляет информацию об изображении пользователю.
-  + 4. В графическом изображении у пользователя открывается поле/окошко, в котором он может видеть изображение.
+I. Создание новой сессии(комнаты) для редактирования изображения:
+  1. В соответствующем окне интерфейса пользователь нажимает на кнопку "Создать комнату"
+  2. Клиентское приложение посылает запрос на сервер.
+  3. Сервер проверяет, есть ли свободные места под комнаты.
+  4. Если места есть, сервер создаёт новую комнату и автоматически подключает к ней пользователя.
+  5. Если нет, пользователю отправляется сообщение об ошибке.
 
-* II. Прекратить просмотр изображения:
-    + 1. Пользователь нажимает на крестик в углу графического интерфейса. 
-    + 2. Изображение закрывается, и пользователь возвращается в предыдущее окошко графического интерфейса.
+II. Подключение к сессии:
+  1. В соответствующем окне интерфейса пользователь выбирает комнату (из числа доступных), к которой он хочет присоединиться, а затем нажимает на кнопку "Присоединиться"
+  2. Клиентское приложение посылает запрос на сервер.
+  3. Если комната не успела закрыться за прошедшее время, сервер добавляет клиента в список участников комнаты, иначе отправляет сообщение об ошибке.
+  4. Интерфейс переключается на окно редактора.
 
-* III. Редактирования изображения:
-    + 1. В графическом интерфейсе пользователь выбирает нужный файл с изображением и нажимает на поле "редактировать". 
-    + 2. Пользовательский интерфейс отправляет запрос на сервер для получения изображения.
-    + 3. Сервер отправляет информацию об изображении пользователю.
-    + 4. У пользователя открывается соответствующий программный интерфейс. В интерфейсе расположено само изображение и вкладка с инструментами.
-    + 5. В соответствующей вкладке пользователь выбирает один из инструментов: карандаш или ластик.
-    + 6. Далее пользователь переходит во вкладку с изображением и выбирает инструмент. Зажав ЛКМ, пользователь проводит курсором по изображению. 
-    + 7. Графический интерфейс отправляет на сервер информацию о выбранном инструменте и о пикселях, по которым пользователь провёл курсором.
-    + 8. Сервер обрабатывает полученную информацию и, в зависимости от выбранного инструмента, обрабатывает информацию об изменениях, которым подвергнется изображение.
-    + 9. Сервер обратно отправляет информацию пользователю.
-    + 10. На экране у пользователя отображается обновлённое изображение.
+III. Отключение от сессии:
+  1. Пользователь закрывает приложение или нажимает на кнопку выхода в главное меню, которая посылает сигнал.
+  2. Сервер отслеживает сигнал или разрыв соединения с пользователем.
+  3. Сервер удаляет клиента из числа участников комнаты.
 
-* IV. Сохранение изображения
-   + 1. В графическом интерфейсе пользователь выбирает вкладку "Сохранить изображение" и выбирает один из предложенных форматов (PNG/JPG). Также в другом окне пользователь указывает путь, по которому на устройстве будет сохранен файл с изображением.
-    + 2. Сервер собирает информацию об изначальном виде изображения и о внесённых в него изменениях.
-    + 3. При помощи определённого алгоритма сервер обрабатывает и преобразует полученную информацию в файл формата PNG или JPG, затем отправляет его обратно пользователю.
-    + 4. Устройство пользователя принимает файл и сохраняет его по указанному ранее пути.
+IV. Принятие роли редактора изображения:
+  1. Пользователь нажимает на кнопку в интерфейсе, которая посылает запрос на соответствующую сервер.
+  2. Сервер смотрит, не занята ли роль редактора в данный момент.
+  3. Если не занята - сервер выдаёт пользователю роль редактора.
+  4. Если занята - уведомляет его об ошибке.
+
+V. Снятие роли редактора изображения:
+  1. Пользователь нажимает на кнопку в интерфейсе, которая посылает запрос на соответствующую сервер.
+  2. Сервер смотрит, является ли пользователь редактором.
+  3. Если является - сервер снимает роль с пользователя.
+  4. Если не является - уведомляет его об ошибке.
+
+VI. Внесение изменения в изображение:
+  1. Пользователь выбирает инструмент для редактирования изображение.
+  2. Пользователь проводит мышкой по холсту.
+  3. Клиентское приложение создаёт запрос, содержащий информацию об изменениях в изображении, и посылает этот запрос на сервер.
+  4. Сервер принимает запрос и обрабатывает его, создавая новую версию изображения.
+  5. Сервер отправляет новую версию изображения всем участникам соответствующей комнаты.
+  6. У всех участников комнаты в графическом интерфейсе отображается новая версия изображения.
 
 ##  Архитектура системы
 
@@ -88,7 +98,54 @@
 * Logs DB - База данных, хранящая логи том, что происходило на серверах во время сессий.
 
 **Диаграмма компонентов:**
-<https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=Rasp.drawio&dark=auto#R%3Cmxfile%3E%3Cdiagram%20name%3D%22%D0%A1%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0%20%E2%80%94%201%22%20id%3D%22AjQ_Fv6i8eFsjXY3NpaH%22%3E7Vxbc6o6FP41PnYPhIvyWC%2B9zLRz3NueOdvHKKlmNoIDWHX%2F%2BpNAgkCwUgsSZugDJYsQzLdWvqy1Euhpo83h0Yfb9atnI6cHFPvQ08Y9AIBimuQflRxjiUr%2BYsnKxzaTnQQz%2FBcxocKkO2yjIFMx9DwnxNuscOm5LlqGGRn0fW%2BfrfbuOdmnbuEKCYLZEjpMCk7S%2F7AdrmPpAPRP8ieEV2v%2BZNW04isbyCuzngRraHv7lEib9LSR73lhfLY5jJBD0eO4xPc9nLma%2FFwfuWGZG3bD%2FevzwsHrhXI3f3DmP63N6x1r5QM6O9Zh9mPDI0fA93aujWgjSk8b7tc4RLMtXNKre6J0IluHG4eUVHIq%2Fij%2BBOSH6JASsR%2F5iLwNCv0jqcKuDhhezGKS8v4EP1CYbJ2CXudCyFS%2BSpo%2BoUJOGDBfAAmIIBEsrHt6HA6j4yA6GtFx3CNQDEB0VCNJXHPC6hA90ZOHqIKSun2YqmZmG0w9Iq8fAmuYVQJ08Mol50uiBOQTAQUfE5u%2BZxc22Lbp7YXazOq7BoVaJRWq1aVPXdDnvwHBKQ%2FsBVOHwTYmnHd8oHBVAZWqZ7HSNBGrQQFUg7qgMloDla43DJXZGqgMo2GoBvLNOsnsccyVL7GUataFkiWg9AhDtIfH9k0BArpq03OAKno%2B99NnIjiHcQPjVjclozi1wBPK44Rc%2B5763dT4HBgEeEnACELoh6I4hV%2FW5NABh7%2FZFXo%2Bp%2FIfBiuND6lq4yMvuKSLv9OF%2BC5g8PLpvqjEbzyrqcDb%2BUt02ZEgnVuhsISxITsTbIiKTynWKFAsl%2FnIgSH%2ByAYuRdpmT5h6mHQtsau%2BlZsPrJzBxB1nd6VDilxDg%2FzEoucaipERGoqML%2Bn2N%2BxRnHN%2FTWZvpK2nt7epaJoE%2Fhe4ICHqlVzpowD%2FhYuoPWo5W9qxqKvGsGeMC23p84GU54IkkGVP6aVjxSKOUH4oCg9GmRZ4UHetlfAq3vt7gOrRm9ZCHqmPRoyORpqlETHKaQmN8HF0PY1wzgDSc4YYtcvPGf36SMPsSKNZ0ui3lTT4QLqeNCRmCQlTC2aJjLYBCoZcfRltVcwtzJD%2FgZcoEOCSPrmQx1crSN0YZgG%2BtSUXuDJT8E59j4AbYHdF5BRrOVKDFshh13TCGYh5mZZA13h2hlNd%2B6BrPCENxICUo6W8Qheu5MCtr%2BVG68BoGDfRKR%2BtoUs8TaA8u%2B%2BevyF%2BgueS0hN0yZQgJYpGwXxxWxTF%2BFPAqZrQJglTTtmMOav5WZTCQ6JTGDRPXSkOic4q6mJkA8qmVfmo7UKbap1oXbTHaG1E2pAmGUBVpFPBwMygL386FYhp8Lr544tLLMU5FfB5UuUbDKKVZRClY5A6LFIT40vJGYQPoW8zyB1dkdFM6TlDTF%2B1gjOap4wun1qP0yHmTCSnDD6CqnA6dMVqm9NRItMqI4H0m2cQ0DFILQwi5r8kZxA%2BhCpxOnSeDOLLDNIziOgk3pZBLq7O3ppBSic%2BOgaph0HEdKbkDMKHUCUMYgDpvQ5N9BJbwRnNU0YXttRDGeLKkdyUkYygKigDqP2s03GnSc8gJV55lJFB6kuWlqaQLllaD4WceRVFXgo5t%2BR6DYWoitW27euaGGi%2BeHSHBWGAP3KscRNUJdudot9skeoa%2Brz9pn%2B%2BL7db5W6KdsUE5urXdCT%2FBl692rUqnoVqDf3qN1u6uib9IzOT6B2T1GKQYiKzJUxS5RKWwm9tDZFwO5bpZQE1%2F7mUog8RqEW72ev7EIEhBihjSEwDBm18XUBEuOBjBIUI1%2Fa%2BgFEYUBBsFY6zAHOwhlt6ujw6mODja5etcxEj%2BbJIBHD5ZxXh%2B88uJM0gJg%2Fir3CpRkWAa2o2SVQUi1i3jEWMa98l%2FHKyR7JscVlPgUe4nadQ8YwjxhyTD8SeJaePkIyVSqKNZFm6PU7CtZvzW7%2B0BDqyaJYsxLBCerKobCN%2BS8ni2iRn67fPKh1ZNEsWYlJMerKoLI9Jd7%2FxvTvykgMPKSWIOmhpinxMukSV3QBhcB64SBhGRxj1WKOY1Jn9fJGYLpLhU8mqM9Ab3KlCiqfvfsfVT59P1yb%2FAw%3D%3D%3C%2Fdiagram%3E%3C%2Fmxfile%3E>
+
+```mermaid
+flowchart TD
+    subgraph Клиентское_приложение [Клиентское приложение]
+        User1[User]
+        User2[User]
+        User3[User]
+    end
+
+    subgraph Gateway [Gateway]
+        API_Gateway[API Gateway]
+    end
+
+    subgraph Services [Services]
+        Processing_Server1[Processing Server]
+        Processing_Server2[Processing Server]
+        Processing_Server3[Processing Server]
+        Server_Manager[Server Manager]
+        Change_Information_Handler[Change Information Handler]
+        Log_Broker[Log Broker]
+    end
+
+    subgraph Databases [Databases]
+        Logs_Database[Logs Database]
+    end
+
+    User1 -->|REST/HTTP| API_Gateway
+    User2 -->|REST/HTTP| API_Gateway
+    User3 -->|REST/HTTP| API_Gateway
+
+    API_Gateway -->|gRPC/HTTP| Server_Manager
+    API_Gateway -->|gRPC/HTTP| Change_Information_Handler
+
+    Server_Manager -->|API| Processing_Server1
+    Server_Manager -->|API| Processing_Server2
+    Server_Manager -->|API| Processing_Server3
+
+    Change_Information_Handler -->|API| Processing_Server1
+    Change_Information_Handler -->|API| Processing_Server2
+    Change_Information_Handler -->|API| Processing_Server3
+    Change_Information_Handler -->|API| Server_Manager
+
+    Processing_Server1 -->|Event| Log_Broker
+    Processing_Server2 -->|Event| Log_Broker
+    Processing_Server3 -->|Event| Log_Broker
+
+    Log_Broker -->|SQL| Logs_Database
+```
 
 ## Технические сценарии
 
@@ -302,10 +359,8 @@ sequenceDiagram
 
 - **MVP (необходимый минимум):**
 1. Написание клиентского приложения для редактирования изображения с минимальным набором функций и инструментов.
-2. Реализация API Gateway, Server Manager, Change Information Handler
-3. Подключение всего двух серверов (Processing Server).
-4. Проведение тестов, добавление частичной отказоустойчивости (отказ первого сервера не затрагивает второй сервер; при падении сервера пользователь может сохранить последние полученные данные).
-5. Сценарий IV на подключение к сессии урезан и не включает в себя запрос разрешения на подключение к сессии: пользователь подключается к сессии сразу без согласия её создателя.
+2. Реализация API Gateway, Server Manager, Change Information Handler.
+3. Сценарий IV на подключение к сессии урезан и не включает в себя запрос разрешения на подключение к сессии: пользователь подключается к сессии сразу без согласия её создателя.
 
 **DoD (MVP):**
 * Работоспособность:
