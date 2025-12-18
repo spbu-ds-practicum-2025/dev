@@ -2,7 +2,7 @@ from PyQt6.QtGui import QImage, QColor
 from PyQt6.QtWidgets import QFileDialog, QDialog
 
 from ui.singleplayer_editor_ui import SinglePlayerEditorUI
-from editor.resize_dialog import ResizeDialog
+from .resize_dialog import ResizeDialog
 
 class EditorWindow(SinglePlayerEditorUI):
     def __init__(self, parent):
@@ -50,7 +50,7 @@ class EditorWindow(SinglePlayerEditorUI):
     def create_new_image(self):
         dialog = ResizeDialog(self)
         if dialog.exec() == QDialog.DialogCode.Accepted:
-            width, height = dialog.get_dimensions()
+            width, height = dialog.get_input()
             self.canvas.set_new_image(width, height)
 
     def load_image(self):

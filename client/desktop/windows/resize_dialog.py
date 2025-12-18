@@ -17,7 +17,9 @@ class ResizeDialog(QDialog):
         self.confirm_button.clicked.connect(self.accept)
         self.layout.addWidget(self.confirm_button)
 
-    def get_dimensions(self):
-        width = int(self.width_input.text())
-        height = int(self.height_input.text())
+    def get_input(self):
+        width_input = self.width_input.text()
+        height_input = self.height_input.text()
+        width = int(width_input) if width_input.isdigit() else 16
+        height = int(height_input) if height_input.isdigit() else 16
         return width, height
