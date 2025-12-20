@@ -41,6 +41,7 @@ class ClientWebSocket():
                         await asyncio.create_task(self.ROOM_MENU.update_rooms_data())
                         self.ROOM_MENU.open_multiplayer_editor_func()
                         await self.websocket.send(json.dumps({"type": "get_image"}))
+                        self.MULTI_EDITOR.stun_role_label()
                     elif data["status"] == "fail":
                         detail = data["detail"]
                         if detail == "already_exists":
@@ -54,6 +55,9 @@ class ClientWebSocket():
                     if data["status"] == "success":
                         await asyncio.create_task(self.ROOM_MENU.update_rooms_data())
                         self.ROOM_MENU.open_multiplayer_editor_func()
+                        self.MULTI_EDITOR.is_redactor = False
+                        self.MULTI_EDITOR.is_redactor_open = False
+                        self.MULTI_EDITOR.stun_role_label()
                         await self.websocket.send(json.dumps({"type": "get_image"}))
                     elif data["status"] == "fail":
                         print(data["status"])
@@ -94,11 +98,11 @@ class ClientWebSocket():
                         self.MULTI_EDITOR.is_redactor_open = False
                         if data["detail"] == "redactor":
                             self.MULTI_EDITOR.is_redactor = True
-                            self.MULTI_EDITOR.role_status_label.setText("  Роль редактора: <span style='color: #10b02b;'>занята вами.</span>")
+                            self.MULTI_EDITOR.update_role_label()
                             self.ROOM_MENU.handle_result(f"Внимание|Вы заняли роль редактора")
                         else:
                             self.MULTI_EDITOR.is_redactor = False
-                            self.MULTI_EDITOR.role_status_label.setText("  Роль редактора: <span style='color: #dbb700;'>занята не вами.</span>")
+                            self.MULTI_EDITOR.update_role_label()
                             self.ROOM_MENU.handle_result(f"Внимание|Роль редактора была занята")
                     elif data["status"] == "fail":
                         self.ROOM_MENU.handle_result(f"Ошибка|Не удалось занять роль редактора:\n{data['detail']}")
@@ -107,7 +111,7 @@ class ClientWebSocket():
                     if data["status"] == "success":
                         self.MULTI_EDITOR.is_redactor_open = True
                         self.MULTI_EDITOR.is_redactor = False
-                        self.MULTI_EDITOR.role_status_label.setText("  Роль редактора: <span style='color: #13a6cf;'>свободна.</span>")
+                        self.MULTI_EDITOR.update_role_label()
                         self.ROOM_MENU.handle_result(f"Внимание|Роль редактора освобождена")
                     elif data["status"] == "fail":
                         self.ROOM_MENU.handle_result(f"Ошибка|Не удалось снять роль редактора:\n{data['detail']}")

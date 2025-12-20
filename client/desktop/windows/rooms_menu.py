@@ -1,5 +1,6 @@
 import json
 import websockets
+from websockets import ConnectionClosedError
 from websockets.protocol import State
 import asyncio
 
@@ -52,6 +53,15 @@ class RoomMenu(RoomMenu_UI):
                     self.send_heartbeat(),
                     self.CW.listen_server()
                 )
+
+            except ConnectionClosedError:
+                self.handle_result(f"Ошибка|Сервер разорвал соединение. Проверьте состояние сервера.")
+                if (not self.CW.websocket) or (self.CW.websocket and not self.CW.websocket.state == State.OPEN):
+                    self.update_status_label(status="disconnected")
+            except ConnectionRefusedError as e:
+                self.handle_result(f"Ошибка|Не удалось подключиться к серверу.")
+                if (not self.CW.websocket) or (self.CW.websocket and not self.CW.websocket.state == State.OPEN):
+                    self.update_status_label(status="disconnected")
             except Exception as e:
                 self.handle_result(f"Ошибка|Ошибка при подключении к серверу:{str(e)}")
                 if (not self.CW.websocket) or (self.CW.websocket and not self.CW.websocket.state == State.OPEN):
@@ -103,8 +113,7 @@ class RoomMenu(RoomMenu_UI):
             try:
                 await self.CW.websocket.ping()
                 await asyncio.sleep(8)
-            except Exception as e:
-                self.handle_result(f"Соединение закрыто|Ошибка: {str(e)}")
+            except Exception:
                 self.update_status_label(status="disconnected")
                 self.CW.websocket = None
                 break

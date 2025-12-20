@@ -47,6 +47,7 @@ class ServerManagerService:
         if not self.is_client_in_room(room_name, client_id):
             raise ClientNotFoundInRoomError
 
+        self.take_all_redactor_rights(client_id)
         self.rooms[room_name].remove(client_id)
 
     def remove_client_from_all_rooms(self, client_id):
@@ -67,6 +68,7 @@ class ServerManagerService:
         if not self.is_client_exists(client_id):
             raise ClientNotFoundError
         self.remove_client_from_all_rooms(client_id)
+        self.take_all_redactor_rights(client_id)
         self.clients.pop(client_id)
 
     def return_clients_list(self):

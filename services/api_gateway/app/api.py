@@ -227,9 +227,7 @@ async def websocket_endpoint(websocket: WebSocket):
         try:
             async with httpx.AsyncClient() as client:
                 response = await client.post(f"{SERVER_MANAGER_URL}/client/disconnect/{client_id}")
-                print(response)
                 connected_clients.pop(client_id, None)
-                print(f"Закрыто соединение с {client_id}")
         except Exception:
             await client.post(f"{SERVER_MANAGER_URL}/client/disconnect/{client_id}")
 

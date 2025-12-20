@@ -127,3 +127,14 @@ class MultiPlayerEditorWindow(MultiPlayerEditorUI):
     def handle_result(self, result):
         title, message = result.split('|')
         QMessageBox.information(self, title, message)
+
+    def update_role_label(self):
+        if self.is_redactor:
+            self.role_status_label.setText("  Роль редактора: <span style='color: #10b02b;'>занята вами.</span>")
+        elif not self.is_redactor and not self.is_redactor_open:
+            self.role_status_label.setText("  Роль редактора: <span style='color: #dbb700;'>занята не вами.</span>")
+        elif not self.is_redactor and self.is_redactor_open:
+            self.role_status_label.setText("  Роль редактора: <span style='color: #13a6cf;'>свободна.</span>")
+
+    def stun_role_label(self):
+        self.role_status_label.setText("  Роль редактора: <Ожидание>")

@@ -8,7 +8,7 @@ service = ServerManagerService()
 # ------------------ FROM API-GATEWAY ------------------
 
 @api_app.post("/redactor_role/take/{client_id}")
-def redactor_role_leave(client_id: str):
+def redactor_role_take(client_id: str):
     try:
         room = service.return_client_room(client_id)
         server = service.return_room_server(room)
