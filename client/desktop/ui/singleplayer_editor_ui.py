@@ -1,6 +1,6 @@
 import os.path
 from PyQt6.QtCore import QSize
-from PyQt6.QtGui import QAction, QIcon
+from PyQt6.QtGui import QAction, QIcon, QColor
 from PyQt6.QtWidgets import QWidget, QHBoxLayout, QMenuBar, QVBoxLayout, QPushButton, QFrame, QLabel
 
 from editor.pixel_canvas import PixelCanvas
@@ -71,10 +71,14 @@ class SinglePlayerEditorUI(QWidget):
                 color_button.resize(10, 4)
                 row_layout.addWidget(color_button)
             right_panel.addLayout(row_layout)
-        empty_line_right = QFrame()
-        empty_line_right.setFrameShape(QFrame.Shape.VLine)
-        empty_line_right.setFrameShadow(QFrame.Shadow.Sunken)
-        right_panel.addWidget(empty_line_right)
+
+        self.redactor_layout = QVBoxLayout()
+        right_panel.addLayout(self.redactor_layout)
+
+        empty_line2 = QFrame()
+        empty_line2.setFrameShape(QFrame.Shape.VLine)
+        empty_line2.setFrameShadow(QFrame.Shadow.Sunken)
+        right_panel.addWidget(empty_line2)
 
         top_layout1 = QHBoxLayout()
         top_layout1.setContentsMargins(0, 0, 0, 0)
@@ -117,3 +121,21 @@ class SinglePlayerEditorUI(QWidget):
             color_button.setStyleSheet(f"background-color: {SinglePlayerEditorUI.buttons_palette[color_id]};")
         self.drawing_button.setIcon(QIcon(os.path.join("assets", 'icons', 'pencil.png')))
         self.drawing_button.setIconSize(QSize(32, 32))
+
+    def change_color(self, color_id):
+        color = QColor(SinglePlayerEditorUI.buttons_palette[color_id])
+        self.canvas.set_pen_color(color)
+        self.update_info_label()
+
+    def select_tool(self, tool_name):
+        self.canvas.set_tool(tool_name)
+        self.update_info_label()
+
+    def update_info_label(self):
+        tool = self.canvas.tool
+        color = self.canvas.pen_color.name()
+        self.tool_info_label.setText(f"Инструмент: {tool} | Цвет: {color}")
+
+
+
+

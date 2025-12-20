@@ -1,169 +1,122 @@
-import requests
+import json
+import websockets
+from websockets.protocol import State
+import asyncio
+
 from PyQt6.QtWidgets import QMessageBox, QDialog
 from PyQt6.QtCore import pyqtSignal
+from qasync import asyncSlot
 
 from ui.rooms_menu_ui import RoomMenu_UI
-from utils.thread_worker import ThreadWorker
 from .server_connection_dialog import ServerConnectionDialog
+from .room_creation_dialog import RoomCreationDialog
+from utils.client_websocket import ClientWebSocket
 
 class RoomMenu(RoomMenu_UI):
     go_to_main_menu = pyqtSignal()
-    join_successful = pyqtSignal(str)
+    open_multiplayer_editor = pyqtSignal()
 
-    def __init__(self, parent):
+    def __init__(self, parent, client_websocket: ClientWebSocket):
         super().__init__(parent)
-        # ------------
-        self.server_ip = None
-        self.server_port = None
-        self.is_connected = False
+        self.CW = client_websocket
+
         # ------------
 
-        self.current_selected_room = None
-
-        self.button_connect_to_server.clicked.connect(self.open_connect_to_server_dialog)
-        # self.button_ask_server_data.clicked.connect(self.update_rooms_data)
+        self.button_connect_to_server.clicked.connect(self.on_connect_button_clicked)
         self.table.itemSelectionChanged.connect(self.on_room_selection_changed)
         self.btn_main_menu.clicked.connect(self.go_to_main_menu.emit)
-        self.btn_create_room.clicked.connect(self.create_room)
-        self.btn_join.clicked.connect(self.join_room)
+        self.btn_create_room.clicked.connect(self.on_create_room_button_clicked)
+        self.btn_join.clicked.connect(self.on_join_room_button_clicked)
 
         self.update_table({})
+        self.update_status_label(status="disconnected")
 
-    def on_room_selection_changed(self):
-        selected_items = self.table.selectedItems()
-        if selected_items:
-            row = selected_items[0].row()
-            self.current_selected_room = self.table.item(row, 0).text()
-            self.btn_join.setEnabled(True)
-        else:
-            self.current_selected_room = None
-            self.btn_join.setEnabled(False)
-
-    def join_room(self):
-        if not self.current_selected_room:
-            return
-
-        room_name = self.current_selected_room
-        try:
-            # TO DO (Настроить подсоединение к системе #ВаляСкиньAPIGateway)
-            # payload = {'room_name': room_name}
-            # response = requests.post('http://..../join', json=payload)
-            # if response.status_code == 200:
-            #     print("Успешное присоединение!")
-            #     self.join_successful.emit(room_name)
-            # else:
-            #     QMessageBox.warning(self, "Ошибка", f"Не удалось присоединиться: {response.status_code}")
-            QMessageBox.information(self, "Успех", f"Успешное присоединение к {room_name}! (заглушка)")
-            self.join_successful.emit(room_name)
-        except requests.exceptions.RequestException as e:
-            QMessageBox.critical(self, "Ошибка сети", f"Ошибка при отправке запроса: {e}")
-
-    def create_room(self):
-        try:
-            # TO DO (Настроить подсоединение к системе #ВаляСкиньAPIGateway)
-            # response = requests.post('http://.../create_room')
-            # if response.status_code == 201:
-            #     QMessageBox.information(self, "Успех", "Комната успешно создана!")
-            #     self.update_table({})
-            # else:
-            #     QMessageBox.warning(self, "Ошибка", "Не удалось создать комнату.")
-
-            QMessageBox.information(self, "Успех", "Комната X успешно создана! (заглушка)")
-            self.update_table({})
-        except requests.exceptions.RequestException as e:
-            QMessageBox.critical(self, "Ошибка сети", f"Ошибка при отправке запроса: {e}")
-
-    def open_connect_to_server_dialog(self):
+    @asyncSlot()
+    async def on_connect_button_clicked(self):
         dialog = ServerConnectionDialog(self)
         if dialog.exec() == QDialog.DialogCode.Accepted:
-            ip, port = dialog.get_input()
-            self.server_ip = ip
-            self.server_port = port
-            # self.connect_to_server(ip, port)
+            if self.CW.websocket and self.CW.websocket.state == State.OPEN:
+                self.handle_result(f"Ошибка|Подключение к серверу уже установлено")
+                return
+            try:
+                ip, port = dialog.get_input()
+                self.update_status_label(status="connecting")
+                websocket = await asyncio.wait_for(
+                    websockets.connect(f'ws://{ip}:{port}/ws'),
+                    timeout=10
+                )
+                self.CW.set_websocket(websocket)
+                self.update_status_label(status="connected")
+                await asyncio.gather(
+                    self.update_rooms_data(),
+                    self.send_heartbeat(),
+                    self.CW.listen_server()
+                )
+            except Exception as e:
+                self.handle_result(f"Ошибка|Ошибка при подключении к серверу:{str(e)}")
+                if (not self.CW.websocket) or (self.CW.websocket and not self.CW.websocket.state == State.OPEN):
+                    self.update_status_label(status="disconnected")
 
-            url = f"http://{ip}:{port}/connect_client"
-            print(f"Connecting to: {url}")
-            self.do_async_request(self.connect_request, url)
+    @asyncSlot()
+    async def on_create_room_button_clicked(self):
+        dialog = RoomCreationDialog(self)
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            if not (self.CW.websocket and self.CW.websocket.state == State.OPEN):
+                self.handle_result("Ошибка|Отсутствует подключение к серверу")
+                return
 
-    # def connect_to_server(self, server_ip, server_port):
-    #     url = f"http://{server_ip}:{server_port}/connect_client"
-    #     print(f"Connecting to: {url}")
-    #
-    #     self.worker = ThreadWorker(self.make_connect_request, url)
-    #     self.worker.finished.connect(self.handle_result)
-    #     self.worker.start()
-
-
-    def update_rooms_data(self):
-        print(self.server_port,self.server_ip, self.is_connected)
-        if self.server_port and self.server_ip: # and self.is_connected:
-            url = f"http://{self.server_ip}:{self.server_port}/update_rooms_data"
-            print(f"Asking for data: {url}")
-
-            self.do_async_request(self.data_request, url)
-
-
-    def create_room(self, room_name):
-        if self.server_port and self.server_ip: # and self.is_connected:
-            url = f"http://{self.server_ip}:{self.server_port}/create_room/{'AAA'}"
-            print(f"Asking for data: {url}")
+            self.update_status_label(status="processing")
 
             try:
-                response = requests.post(url, timeout=3)
-                if response.status_code == 200:
-                    print(f"Успех|Комната успешно создана")
-                else:
-                    print(f"Ошибка|Ошибка сервера: {response.text}")
-            except requests.exceptions.RequestException as e:
-                print(f"Ошибка при создании комнаты|Непредвиденная ошибка: {e}")
+                room_name = dialog.get_input()
+                await self.CW.websocket.send(json.dumps({"type": "create_room", "room_name": room_name}))
 
-            self.update_rooms_data()
+            except asyncio.TimeoutError:
+                self.handle_result("Ошибка|Таймаут при ожидании ответа.")
+            except Exception as e:
+                self.handle_result(f"Ошибка|Не удалось создать комнату: {e}")
+            self.update_status_label(status="connected")
 
-    def do_async_request(self, function, url):
-        if function and url:
-            self.worker = ThreadWorker(function, url)
-            self.worker.finished.connect(self.handle_result)
-            self.worker.start()
+    @asyncSlot()
+    async def on_join_room_button_clicked(self):
+        if not self.current_selected_room:
+            self.handle_result("Ошибка|Выберите комнату для подключения")
+            return
+        if not (self.CW.websocket and self.CW.websocket.state == State.OPEN):
+            self.handle_result("Ошибка|Отсутствует подключение к серверу")
+            return
 
-    def data_request(self, url):
+        self.update_status_label(status="processing")
         try:
-            response = requests.get(url, timeout=3)
-            if response.status_code == 200:
-                rooms_data = response.json()
-                self.update_table(rooms_data["rooms"])
-                return f"Успех|Информация получена: {rooms_data}"
-            else:
-                self.update_table({})
-                return f"Ошибка|Ошибка сервера: {response.text}"
-        except requests.exceptions.RequestException as e:
-            return f"Ошибка при запросе информации с сервера|Непредвиденная ошибка: {e}"
+            room_name = self.current_selected_room
+            data = {"type": "join_room", "room_name": room_name}
+            await self.CW.websocket.send(json.dumps(data))
+        except Exception as e:
+            self.handle_result(f"Ошибка|Не удалось подключиться к комнате: {e}")
+        self.update_status_label(status="connected")
 
-    def connect_request(self, url):
-        try:
-            # self.is_connected = False
-            response = requests.post(url, timeout=3)
-            if response.status_code == 200:
-                self.is_connected = True
-                return "Успех|Успешное присоединение!"
-            else:
-                # self.server_ip = None
-                # self.server_port = None
-                return f"Ошибка|Ошибка сервера: {response.text}"
-        except requests.exceptions.Timeout:
-            # self.server_ip = None
-            # self.server_port = None
-            return "Ошибка при подключении к серверу|Время ожидания истекло. Проверьте введённый порт и IP."
-        except requests.exceptions.ConnectionError:
-            # self.server_ip = None
-            # self.server_port = None
-            return "Ошибка при подключении к серверу|Не удалось подключиться к серверу, проверьте состояние сервера."
-        except requests.exceptions.RequestException as e:
-            # self.server_ip = None
-            # self.server_port = None
-            return f"Ошибка при подключении к серверу|Непредвиденная ошибка: {e}"
+    def open_multiplayer_editor_func(self):
+        self.open_multiplayer_editor.emit()
 
+    async def send_heartbeat(self):
+        while self.CW.exist():
+            try:
+                await self.CW.websocket.ping()
+                await asyncio.sleep(8)
+            except Exception as e:
+                self.handle_result(f"Соединение закрыто|Ошибка: {str(e)}")
+                self.update_status_label(status="disconnected")
+                self.CW.websocket = None
+                break
+
+    async def update_rooms_data(self):
+        if self.CW.websocket and self.CW.websocket.state == State.OPEN:
+            try:
+                data = {"type": "get_info"}
+                await self.CW.websocket.send(json.dumps(data))
+            except Exception as e:
+                self.handle_result(f"Ошибка|Не удалось отправить запрос на получение данных: {e}")
 
     def handle_result(self, result):
         title, message = result.split('|')
         QMessageBox.information(self, title, message)
-

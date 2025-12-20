@@ -14,13 +14,14 @@ class RoomMenu_UI(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
 
+        self.current_selected_room = None
+
         self.setWindowTitle("Выбор Комнаты (PyQT6)")
         self.setGeometry(100, 100, 600, 400)
 
         self.button_connect_to_server = QPushButton("Подключиться к серверу")
         self.button_connect_to_server.setMaximumWidth(150)
-        self.status_label = QLabel(f"Статус соединения: <span style='color: red;'>нет соединения с сервером</span>")
-        # self.button_ask_server_data = QPushButton("Запросить инфу")
+        self.status_label = QLabel()
 
         self.table = QTableWidget()
         self.table.setColumnCount(2)
@@ -39,8 +40,9 @@ class RoomMenu_UI(QWidget):
 
         top_layout = QHBoxLayout()
         top_layout.addWidget(self.button_connect_to_server, alignment=Qt.AlignmentFlag.AlignLeft)
+        top_layout.addStretch()
         top_layout.addWidget(self.status_label, alignment=Qt.AlignmentFlag.AlignRight)
-        # top_layout.addWidget(self.button_ask_server_data)
+
         button_layout = QHBoxLayout()
         button_layout.addWidget(self.btn_main_menu)
         button_layout.addStretch(1)
@@ -56,6 +58,7 @@ class RoomMenu_UI(QWidget):
         self.table.horizontalHeader().setStyleSheet(f"QHeaderView::section {{ background-color: {color2}; color: white; }}")
         self.table.verticalHeader().setStyleSheet(f"QHeaderView::section {{ background-color: {color2}; color: white; }}")
 
+
     def update_table(self, rooms_data):
         row_count = len(rooms_data)
         self.table.setRowCount(row_count)
@@ -63,6 +66,32 @@ class RoomMenu_UI(QWidget):
             self.table.setItem(row, 0, QTableWidgetItem(room))
             participants_str = ", ".join(rooms_data[room])
             self.table.setItem(row, 1, QTableWidgetItem(participants_str))
-        # self.table.resizeColumnsToContents()
+
+
+    def update_status_label(self, status: str):
+        if status == "connected":
+            self.status_label.setText(f"Статус: <span style='color: #00a61c;'>соединение с сервером установлено</span>")
+        elif status == "disconnected":
+            self.status_label.setText(f"Статус: <span style='color: red;'>нет соединения с сервером</span>")
+        elif status == "connecting":
+            self.status_label.setText(f"Статус: <span style='color: #00bfff;'>подключение к серверу...</span>")
+        elif status == "processing":
+            self.status_label.setText(f"Статус: <span style='color: #00db5f;'>обработка запроса...</span>")
+        else:
+            self.status_label.setText(f"Статус: <span style='color: #7700d9;'>неизвестный статус</span>")
+
+    def on_room_selection_changed(self):
+        selected_items = self.table.selectedItems()
+        if selected_items:
+            row = selected_items[0].row()
+            self.current_selected_room = self.table.item(row, 0).text()
+            self.btn_join.setEnabled(True)
+        else:
+            self.current_selected_room = None
+            self.btn_join.setEnabled(False)
+
+
+
+
 
 

@@ -10,7 +10,7 @@ class ServerConnectionDialog(QDialog):
         self.ip_input = QLineEdit(self)
         self.ip_input.setText("192.168.0.12")
         self.port_input = QLineEdit(self)
-        self.port_input.setText("8000")
+        self.port_input.setText("8080")
         self.layout.addRow("IP:", self.ip_input)
         self.layout.addRow("Port:", self.port_input)
 

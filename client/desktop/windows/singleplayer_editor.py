@@ -1,10 +1,10 @@
-from PyQt6.QtGui import QImage, QColor
+from PyQt6.QtGui import QImage
 from PyQt6.QtWidgets import QFileDialog, QDialog
 
 from ui.singleplayer_editor_ui import SinglePlayerEditorUI
 from .resize_dialog import ResizeDialog
 
-class EditorWindow(SinglePlayerEditorUI):
+class SinglePlayerEditorWindow(SinglePlayerEditorUI):
     def __init__(self, parent):
         super().__init__(parent)
 
@@ -19,20 +19,6 @@ class EditorWindow(SinglePlayerEditorUI):
         for color_button, color_id in self.color_buttons:
             color_button.clicked.connect(lambda _, x=color_id: self.change_color(x))
 
-        self.update_info_label()
-
-    def select_tool(self, tool_name):
-        self.canvas.set_tool(tool_name)
-        self.update_info_label()
-
-    def update_info_label(self):
-        tool = self.canvas.tool
-        color = self.canvas.pen_color.name()
-        self.tool_info_label.setText(f"Инструмент: {tool} | Цвет: {color}")
-
-    def change_color(self, color_id):
-        color = QColor(SinglePlayerEditorUI.buttons_palette[color_id])
-        self.canvas.set_pen_color(color)
         self.update_info_label()
 
     def clear_image(self):

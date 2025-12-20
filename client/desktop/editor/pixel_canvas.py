@@ -61,7 +61,10 @@ class PixelCanvas(QWidget):
         img_x = max(0, min(self.img_w - 1, img_x))
         img_y = max(0, min(self.img_h - 1, img_y))
 
-        self.image.setPixel(img_x, img_y, self.pen_color.rgb())
+        self.set_pixel(img_x, img_y, self.pen_color.rgb())
+
+    def set_pixel(self, x, y, color):
+        self.image.setPixel(x, y, color)
         self.update()
 
     # -------------------------------------------------------------
@@ -155,6 +158,14 @@ class PixelCanvas(QWidget):
         self.display_size_y = height * self.scale
         self.image = QImage(self.img_w, self.img_h, QImage.Format.Format_RGB32)
         self.clear_image()
+
+    def load_image_from_bytes(self, new_image: QImage):
+        self.img_w = new_image.width()
+        self.img_h = new_image.height()
+        self.display_size_x = self.img_w * self.scale
+        self.display_size_y = self.img_h * self.scale
+        self.clear_image()
+        self.image = new_image
 
     def get_image(self):
         return self.image
